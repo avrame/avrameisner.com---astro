@@ -1,0 +1,423 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ResumeExperience from "../components/ResumeExperience.astro";
+import Heading from "../components/Heading.astro";
+import UnorderedList from "../components/UnorderedList.astro";
+import Link from "../components/Link.astro";
+---
+
+<Layout title="Avram Eisner's Resume">
+  <Link url="/downloads/Avram-Eisner-Resume.pdf" external>
+    Download my résumé
+  </Link>
+
+  <div class="resume flex flex-col gap-6">
+    <address class="vcard">
+      <img class="photo" src="/images/photo.jpg" width="150" />
+      <h1 class="fn">Avram C. Eisner</h1>
+      <span class="adr">
+        <span class="street-address">4130 38th Ave SW</span><br />
+        <span class="locality">Seattle</span><span>,</span><span class="region">
+          WA
+        </span>
+         &nbsp;<span class="postal-code">98126</span><br />
+      </span>
+      <Link url="mailto:avrame@gmail.com">avrame@gmail.com</Link><br />
+      <Link url="tel:1-206-214-8363">1 (206) 214-8363</Link><br /><br />
+      <Link url="http://www.linkedin.com/in/avrame" external>
+        www.linkedin.com/in/avrame
+      </Link><br />
+      <Link url="https://www.github.com/avrame" external>
+        www.github.com/avrame
+      </Link>
+    </address>
+
+    <section class="objective">
+      <Heading level={2}>Objective</Heading>
+       Employment as a front-end web developer where I can apply my expertise in
+      creating and maintaining robust, cross-platform HTML, CSS, and JavaScript.
+    </section>
+
+    <section class="tech-qualifications">
+      <Heading level={2}>Summary of Technical Qualifications</Heading>
+      <ul class="flex flex-wrap gap-1">
+        <li class="skill">JavaScript,</li>
+        <li class="skill">TypeScript,</li>
+        <li class="skill">React,</li>
+        <li class="skill">Node,</li>
+        <li class="skill">Express,</li>
+        <li class="skill">HTML,</li>
+        <li class="skill">CSS,</li>
+        <li class="skill">Git</li>
+      </ul>
+    </section>
+
+    <section class="related-experience flex flex-col gap-4">
+      <Heading level={2}>Related Experience</Heading>
+      <ol class="vcalendar flex flex-col gap-4">
+        <ResumeExperience
+          org="Persefoni AI, Inc."
+          title="Senior Frontend Web Developer"
+          start_date={new Date(2022, 4)}
+          end_date={new Date(2023, 7)}
+          tech_used={[
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Radix UI",
+            "Jest",
+            "Playwright",
+            "Storybook",
+          ]}
+        >
+          <UnorderedList>
+            <li>
+              Spearheaded the development of components in Persefoni's Kore UI
+              library, including charts, graphs, and filterable tables.
+            </li>
+            <li>
+              Led the delivery of the Scope Three data-exchange tool, enabling
+              companies to request emission data from suppliers and clients.
+            </li>
+            <li>
+              Streamlined code organization by creating new packages within the
+              web-app mono-repo to consolidate i18n and data-fetching code,
+              resulting in improved maintainability and efficiency.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="D-Wave Systems"
+          title="Senior Frontend Web Developer"
+          start_date={new Date(2020, 9)}
+          end_date={new Date(2022, 3)}
+          tech_used={["React", "Redux", "Jest", "Babel", "Webpack"]}
+        >
+          <UnorderedList>
+            <li>
+              Solely developed the Leap admin site front-end, enhancing project
+              and user management efficiency.
+            </li>
+            <li>
+              Created an accessible React component library using functional
+              components with hooks.
+            </li>
+            <li>
+              Implemented front-end security measures to prevent XSS attacks and
+              SQL injection.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Verizon Media"
+          title="Frontend Web Developer (contract)"
+          start_date={new Date(2020, 5)}
+          end_date={new Date(2020, 9)}
+          tech_used={["React", "Redux", "Three.js", "GraphQL", "AWS Amplify"]}
+        >
+          <UnorderedList>
+            <li>
+              Built an augmented reality web app to facilitate authoring and
+              sharing of AR content.
+            </li>
+            <li>
+              Successfully migrated codebase from JavaScript to TypeScript for
+              improved reliability.
+            </li>
+            <li>
+              Developed custom code to optimize GLTF and GLB model file
+              handling.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="The Walt Disney Company"
+          title="Frontend Web Developer (contract)"
+          start_date={new Date(2019, 7)}
+          end_date={new Date(2020, 3)}
+          tech_used={["React", "Redux", "Angular", "Jest", "Babel", "Webpack"]}
+        >
+          <UnorderedList>
+            <li>
+              Collaborated with a team to rewrite the OneID account system,
+              enhancing the user experience across Disney properties.
+            </li>
+            <li>
+              Improved the legacy universal account system by addressing UI
+              issues and introducing new features.
+            </li>
+            <li>
+              Facilitated cross-team collaboration to deliver multilingual
+              functionality in over a dozen different languages.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Level 11, LLC"
+          title="Frontend Web Developer (contract)"
+          start_date={new Date(2019, 2)}
+          end_date={new Date(2019, 5)}
+          tech_used={["React", "Redux", "DeckGL", "MapBox"]}
+        >
+          <UnorderedList>
+            <li>
+              Helped build a sophisticated map-based web app that monitors
+              vaccine fridges in Nigeria. This enabled governments and NGOs to
+              make sense out of the data they were receiving from the fridges.
+            </li>
+            <li>
+              Worked directly with clients to quickly iterate on the design and
+              functionality.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Tesseract Software"
+          title="VR Developer / Designer"
+          start_date={new Date(2018, 5)}
+          end_date={new Date(2019, 2)}
+          tech_used={["Unity", "C#", "Git", "Blender"]}
+        >
+          <UnorderedList>
+            <li>
+              Created an educational VR app called You Are Here, showcasing the
+              universe at various scales.
+            </li>
+            <li>
+              Imported and managed extensive astronomical data, enriching user
+              experience.
+            </li>
+            <li>
+              Developed custom code for importing stars and galaxies from
+              astronomical databases.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="FLEXE, Inc."
+          title="Frontend Web Developer"
+          start_date={new Date(2017, 2)}
+          end_date={new Date(2018, 4)}
+          tech_used={["React", "TypeScript", "Jest", "Google Cloud", "Git"]}
+        >
+          <UnorderedList>
+            <li>
+              Spearheaded the development of FLEXE's React-based internal admin
+              website, streamlining warehouse reservation processes.
+            </li>
+            <li>
+              Migrated the new admin website to Google Cloud with automatic
+              deployments to reduce time to deployment.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Mobiquity, Inc."
+          title="Senior Web Developer"
+          start_date={new Date(2015, 1)}
+          end_date={new Date(2017, 0)}
+          tech_used={["React", "jQuery", "Angular", "AWS", "Git"]}
+        >
+          <UnorderedList>
+            <li>Quickly learned to work with Angular and React on the job.</li>
+            <li>
+              Leveraged my knowledge of responsive web development to create
+              websites and webapps that work on all screen sizes.
+            </li>
+            <li>
+              Built a medical survey app for Amazon's voice-enabled service,
+              Alexa.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Self Employed"
+          title="Independent Consultant"
+          start_date={new Date(2014, 3)}
+          end_date={new Date(2014, 11)}
+          tech_used={[
+            "HTML5",
+            "CSS3",
+            "JavaScript",
+            "jQuery",
+            "AWS",
+            "Git",
+            "PHP",
+          ]}
+        >
+          <UnorderedList>
+            <li>
+              Wrote the front and backend code of an interactive learning game
+              for children.
+            </li>
+            <li>
+              Became familiar with a number of technologies including AWS for
+              hosting and Neo4J for storing and querying game data.
+            </li>
+            <li>
+              Relied heavily on CSS3 keyframe animations for creating fun,
+              engaging interactions.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Expedia"
+          title="Client Side Dev Engineer II"
+          start_date={new Date(2012, 1)}
+          end_date={new Date(2014, 2)}
+          tech_used={["HTML5", "CSS3", "JavaScript", "Backbone", "Java"]}
+        >
+          <UnorderedList>
+            <li>
+              Built and tested front-end code for Expedia's mobile website.
+              Backbone was used to create re-usable interactive components
+              throughout the site.
+            </li>
+            <li>
+              Developed a library of JSP tags that formed a front-end UI
+              Toolkit, giving back-end developers throughout the company the
+              ability to create clean, standards-compliant pages.
+            </li>
+            <li>
+              Wrote a complete suite of unit tests for the UI Toolkit framework,
+              including Jasmine tests for the JavaScript, and JUnit tests for
+              the Java components.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Foundry Interactive"
+          title="Contract Web Developer"
+          start_date={new Date(2011, 8)}
+          end_date={new Date(2012, 1)}
+          tech_used={["HTML5", "CSS3", "JavaScript", "jQuery", "Git"]}
+        >
+          <UnorderedList>
+            <li>
+              Created an interactive prototype for Chase bank’s proposed
+              web-based interface for bank tellers.
+            </li>
+            <li>
+              Worked on-site at Blue Nile to help get their new mobile version
+              of the website launched in time for the holidays.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="Design Commission"
+          title="Senior Web Developer"
+          start_date={new Date(2009, 6)}
+          end_date={new Date(2011, 7)}
+          tech_used={[
+            "HTML5",
+            "CSS3",
+            "JavaScript",
+            "jQuery",
+            "Ruby on Rails",
+            "PHP",
+            "Git",
+          ]}
+        >
+          <UnorderedList>
+            <li>
+              Developed WrkView, a Ruby on Rails application for presenting
+              design compositions.
+            </li>
+            <li>
+              Built and maintained Design Commission’s own UI Stencils Shopify
+              website.
+            </li>
+            <li>
+              Wrote front and back-end code for Architects List, a stylish
+              platform for residential architecture firms in cities across the
+              United States to present their work.
+            </li>
+            <li>
+              Worked on-site at Expedia for 5 months, helping them improve their
+              website by creating a lighter, more flexible library of front-end
+              styles and modules that follow the principle of “Object Oriented
+              CSS”.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="The Seattle Times"
+          title="Web Developer (contract)"
+          start_date={new Date(2009, 3)}
+          end_date={new Date(2009, 5)}
+          tech_used={["HTML", "CSS", "JavaScript", "PHP"]}
+        >
+          <UnorderedList>
+            <li>
+              Improved the layout and functionality of the “NWhomes” and
+              “NWautos” tools while moving them from Moveable Type to Wordpress.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+
+        <ResumeExperience
+          org="POP design + technology"
+          title="Web Developer"
+          start_date={new Date(2006, 4)}
+          end_date={new Date(2009, 2)}
+          tech_used={["HTML", "CSS", "JavaScript", "Prototype.js", "PHP"]}
+        >
+          <UnorderedList>
+            <li>
+              Developed and maintained front-end code for high-profile clients
+              such as Tully’s, Nintendo, Electronic Arts, Target, Microsoft, and
+              the Metropolitan Opera.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+      </ol>
+    </section>
+
+    <section class="education">
+      <Heading level={2}>Education</Heading>
+      <UnorderedList>
+        <li class="education vevent">
+          <h3 class="org">University of Washington</h3><h4 class="degree">
+            BS in Informatics
+          </h4><span class="grade">GPA 3.44</span><br /><time
+            class="dstart"
+            title="2003-09">2002</time
+          ><span>&nbsp;&ndash;&nbsp;</span><time class="dend" title="2005-03"
+            >2005</time
+          ><p class="summary">
+            Coursework includes the study of information systems and technology
+            with a human-centered approach: Information System Design, Computer
+            Networks, Database Design, Information Retrieval Systems, Systems
+            Analysis and Design, and Information Management
+          </p>
+        </li>
+      </UnorderedList>
+    </section>
+
+    <section class="honors-awards">
+      <Heading level={2}>Honors / Awards</Heading>
+      <UnorderedList>
+        <li>
+          <h3 class="award">Dean's List, UW</h3><h4>3 quarters</h4><p>
+            Washington State Honors Award (top 10% of high school graduating
+            class)
+          </p>
+        </li>
+      </UnorderedList>
+    </section>
+  </div>
+
+  <style></style>
+</Layout>

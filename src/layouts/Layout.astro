@@ -1,0 +1,48 @@
+---
+import Nav from "../components/Nav.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-blue-200">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="The personal website of me, Avram Eisner."
+    />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="container 2xl:max-w-screen-xl mx-auto flex flex-col mt-4 mb-8">
+      <Nav />
+      <div class="bg-purple-500 border-t-slate-200 border-t-2 h-48 hero"></div>
+      <main
+        class="text-slate-200 bg-blue-900 px-4 py-2 rounded-b-md border-t-slate-200 border-t-2"
+      >
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+  }
+  html {
+    font-family: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052,
+      serif;
+  }
+  .hero {
+    background: center / cover no-repeat
+      url(https://dummyimage.com/800x360/fff/aaa);
+  }
+</style>

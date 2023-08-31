@@ -1,0 +1,51 @@
+---
+interface Props {
+  org: string;
+  title: string;
+  start_date: Date;
+  end_date: Date;
+  tech_used: Array<string>;
+}
+
+const { org, title, start_date, end_date, tech_used } = Astro.props;
+
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const getDateTime = (date: Date) => {
+  const paddedMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+  return `${date.getFullYear()}-${paddedMonth}`;
+};
+
+const getHumanDate = (date: Date) =>
+  `${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}`;
+---
+
+<li class="experience vevent">
+  <h3 class="org text-xl">{org}</h3>
+  <h4 class="title text-lg">{title}</h4>
+  <time class="dstart" datetime={getDateTime(start_date)}
+    >{getHumanDate(start_date)}</time
+  >
+  <span>&nbsp;&ndash;&nbsp;</span>
+  <time class="dend" datetime={getDateTime(end_date)}
+    >{getHumanDate(end_date)}</time
+  >
+  <p>
+    Technologies used:
+    {tech_used.map((tech, idx) => (idx === 0 ? tech : `, ${tech}`))}
+  </p>
+  <slot />
+</li>
