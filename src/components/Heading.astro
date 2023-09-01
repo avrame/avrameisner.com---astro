@@ -4,47 +4,44 @@ interface Props {
 }
 
 const { level } = Astro.props;
+
+let Tag;
+let text_size;
+let margin_btm;
+switch (level) {
+  case 1:
+    Tag = "h1";
+    text_size = "text-3xl";
+    margin_btm = "mb-3";
+    break;
+  case 2:
+    Tag = "h2";
+    text_size = "text-2xl";
+    margin_btm = "mb-3";
+    break;
+  case 3:
+    Tag = "h3";
+    text_size = "text-xl";
+    margin_btm = "mb-2";
+    break;
+  case 4:
+    Tag = "h4";
+    text_size = "text-lg";
+    margin_btm = "mb-2";
+    break;
+  case 5:
+    Tag = "h5";
+    text_size = "text-md";
+    margin_btm = "mb-2";
+    break;
+  case 6:
+    Tag = "h6";
+    text_size = "text-sm";
+    margin_btm = "mb-2";
+    break;
+}
 ---
 
-{
-  level === 1 && (
-    <h1 class="text-3xl">
-      <slot />
-    </h1>
-  )
-}
-{
-  level === 2 && (
-    <h2 class="text-2xl">
-      <slot />
-    </h2>
-  )
-}
-{
-  level === 3 && (
-    <h3 class="text-xl">
-      <slot />
-    </h3>
-  )
-}
-{
-  level === 4 && (
-    <h4 class="text-lg">
-      <slot />
-    </h4>
-  )
-}
-{
-  level === 5 && (
-    <h5 class="text-md">
-      <slot />
-    </h5>
-  )
-}
-{
-  level === 6 && (
-    <h6 class="text-sm">
-      <slot />
-    </h6>
-  )
-}
+<Tag class:list={[text_size, margin_btm]}>
+  <slot />
+</Tag>

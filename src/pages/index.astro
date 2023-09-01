@@ -1,11 +1,18 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Heading from "../components/Heading.astro";
+import Link from "../components/Link.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Welcome to Avram Eisner dot com.">
-	<p>Hi, my name is Avram Eisner, and I'm a full-stack web developer who lives in Seattle, Washington. Besides having a passion for computers and technology, I also enjoy painting and playing music.</p>
-	<p>Come take a look at some of <a href="/art">my art</a>, or see something <a href="/code">I've programmed</a></p>
+  <Heading level={1}>Hi, I'm Avram Eisner</Heading>
+  <p class="mb-2">
+    I'm a full-stack web developer who lives in Seattle, Washington. Besides
+    having a passion for computers and technology, I also enjoy painting and
+    playing music.
+  </p>
+  <p>
+    Come take a look at some of <Link href="/art">my art</Link>, or see
+    something <Link href="/code">I've programmed</Link>.
+  </p>
 </Layout>
-
-<style>
-</style>

@@ -7,14 +7,14 @@ import Link from "../components/Link.astro";
 ---
 
 <Layout title="Avram Eisner's Resume">
-  <Link url="/downloads/Avram-Eisner-Resume.pdf" external>
+  <Link href="/downloads/Avram-Eisner-Resume.pdf" external>
     Download my résumé
   </Link>
 
-  <div class="resume flex flex-col gap-6">
+  <div class="resume flex flex-col gap-8">
     <address class="vcard">
       <img class="photo" src="/images/photo.jpg" width="150" />
-      <h1 class="fn">Avram C. Eisner</h1>
+      <Heading level={1}>Avram C. Eisner</Heading>
       <span class="adr">
         <span class="street-address">4130 38th Ave SW</span><br />
         <span class="locality">Seattle</span><span>,</span><span class="region">
@@ -22,12 +22,12 @@ import Link from "../components/Link.astro";
         </span>
          &nbsp;<span class="postal-code">98126</span><br />
       </span>
-      <Link url="mailto:avrame@gmail.com">avrame@gmail.com</Link><br />
-      <Link url="tel:1-206-214-8363">1 (206) 214-8363</Link><br /><br />
-      <Link url="http://www.linkedin.com/in/avrame" external>
+      <Link href="mailto:avrame@gmail.com">avrame@gmail.com</Link><br />
+      <Link href="tel:1-206-214-8363">1 (206) 214-8363</Link><br /><br />
+      <Link href="http://www.linkedin.com/in/avrame" external>
         www.linkedin.com/in/avrame
       </Link><br />
-      <Link url="https://www.github.com/avrame" external>
+      <Link href="https://www.github.com/avrame" external>
         www.github.com/avrame
       </Link>
     </address>
@@ -387,23 +387,22 @@ import Link from "../components/Link.astro";
 
     <section class="education">
       <Heading level={2}>Education</Heading>
-      <UnorderedList>
+      <ul>
         <li class="education vevent">
-          <h3 class="org">University of Washington</h3><h4 class="degree">
-            BS in Informatics
-          </h4><span class="grade">GPA 3.44</span><br /><time
-            class="dstart"
-            title="2003-09">2002</time
-          ><span>&nbsp;&ndash;&nbsp;</span><time class="dend" title="2005-03"
-            >2005</time
-          ><p class="summary">
+          <Heading level={3}>University of Washington</Heading>
+          <Heading level={4}>BS, Informatics</Heading>
+          <span class="grade">GPA 3.44</span><br />
+          <time class="dstart" title="2003-09">2002</time>
+          <span>&nbsp;&ndash;&nbsp;</span>
+          <time class="dend" title="2005-03">2005</time>
+          <p class="summary">
             Coursework includes the study of information systems and technology
             with a human-centered approach: Information System Design, Computer
             Networks, Database Design, Information Retrieval Systems, Systems
             Analysis and Design, and Information Management
           </p>
         </li>
-      </UnorderedList>
+      </ul>
     </section>
 
     <section class="honors-awards">

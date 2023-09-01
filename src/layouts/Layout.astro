@@ -22,11 +22,11 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <div class="container 2xl:max-w-screen-xl mx-auto flex flex-col mt-4 mb-8">
+    <div class="container 2xl:max-w-screen-xl mx-auto mb-8">
       <Nav />
       <div class="bg-purple-500 border-t-slate-200 border-t-2 h-48 hero"></div>
       <main
-        class="text-slate-200 bg-blue-900 px-4 py-2 rounded-b-md border-t-slate-200 border-t-2"
+        class="text-slate-200 bg-blue-900 p-14 rounded-b-md border-t-slate-200 border-t-2"
       >
         <slot />
       </main>
@@ -35,12 +35,6 @@ const { title } = Astro.props;
 </html>
 
 <style is:global>
-  :root {
-  }
-  html {
-    font-family: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052,
-      serif;
-  }
   .hero {
     background: center / cover no-repeat
       url(https://dummyimage.com/800x360/fff/aaa);

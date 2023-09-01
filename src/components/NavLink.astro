@@ -1,10 +1,21 @@
 ---
 interface Props {
-	text: string;
-	href: string;
+  text: string;
+  href: string;
 }
 
 const { href, text } = Astro.props;
+const { pathname } = new URL(Astro.url);
 ---
 
-<a href={href} class="text-slate-200 bg-blue-700 hover:bg-blue-800 px-4 py-1">{text}</a>
+<a
+  href={href}
+  class:list={[
+    "bg-blue-700",
+    "hover:bg-blue-800",
+    "active:bg-purple-800",
+    "px-6",
+    "py-2",
+    { "bg-blue-900": href === pathname },
+  ]}>{text}</a
+>
