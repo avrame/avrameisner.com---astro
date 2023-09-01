@@ -3,10 +3,10 @@ import NavLink from "./NavLink.astro";
 ---
 
 <nav
-  class="flex gap-px justify-center bg-blue-600 text-sm sm:text-md md:text-lg lg:text-xl xl:text-2xl text-slate-200"
+  class="flex flex-col md:flex-row sticky md:relative gap-2 justify-center text-sm sm:text-md md:text-lg text-slate-200 p-3"
 >
   <NavLink text="Home" href="/" />
-  <NavLink text="Résumé" href="/resume" />
+  <NavLink text="Resume" href="/resume" />
   <NavLink text="Art" href="/art" />
   <NavLink text="Code" href="/code" />
 </nav>
