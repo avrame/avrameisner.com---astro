@@ -2,8 +2,32 @@
 import Nav from "./Nav.astro";
 ---
 
-<header class="bg-blue-600 fixed inset-y-0 left-0 mx-auto flex flex-col items-center md:w-screen md:sticky md:justify-between lg:max-w-screen-lg">
-  <button><i class="iconoir-cancel w-6 h-6"></i></button>
-  <div class="bg-purple-800 text-white w-12 h-12 flex justify-center items-center rounded-full m-3 border-black shadow-inner shadow-slate-800"><span>AE</span></div>
+<header>
+  <button id="open_nav_btn"><i class="iconoir-menu"></i></button>
+  <a href="/"><div class="logo"><span>AE</span></div></a>
   <Nav />
 </header>
+
+<style>
+  @tailwind base;
+  @tailwind components;
+
+  @layer base {
+    header {
+      @apply bg-blue-700;
+      @apply z-50 flex flex-col items-center sticky inset-y-0;
+      @apply md:bg-blue-600 md:justify-between md:flex-row;
+    }
+  }
+
+  @layer components {
+    #open_nav_btn {
+      @apply text-2xl text-slate-200 absolute left-2 top-2;
+      @apply md:hidden;
+    }
+    .logo {
+      @apply bg-purple-800 text-white shadow-inner shadow-slate-800 border-black;
+      @apply w-12 h-12 flex justify-center items-center rounded-full m-3;
+    }
+  }
+</style>

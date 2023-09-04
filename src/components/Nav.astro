@@ -3,10 +3,32 @@ import NavLink from "./NavLink.astro";
 ---
 
 <nav
-  class="flex flex-col md:flex-row sticky md:relative gap-2 justify-center text-sm sm:text-md md:text-lg text-slate-200 p-3"
+  id="main_nav"
+  class="-translate-x-full"
 >
-  <NavLink text="Home" href="/" />
-  <NavLink text="Resume" href="/resume" />
-  <NavLink text="Art" href="/art" />
-  <NavLink text="Code" href="/code" />
+  <button id="close_nav_btn">
+    <i class="iconoir-cancel"></i>
+  </button>
+  <NavLink text="Home" href="/" icon="home" />
+  <NavLink text="Resume" href="/resume" icon="page" />
+  <NavLink text="Art" href="/art" icon="palette" />
+  <NavLink text="Code" href="/code" icon="code" />
 </nav>
+
+<style>
+  @tailwind components;
+
+  @layer components {
+    #main_nav {
+      @apply text-sm text-slate-200;
+      @apply bg-blue-600;
+      @apply p-3 pt-12;
+      @apply fixed flex flex-col gap-2 inset-y-0 left-0 z-50;
+      @apply shadow-xl transition-transform;
+      @apply md:relative md:flex-row md:items-center md:text-lg md:translate-x-0 md:shadow-none md:p-4;
+    }
+    #close_nav_btn {
+      @apply text-3xl absolute left-2 top-2 md:hidden;
+    }
+  }
+</style>

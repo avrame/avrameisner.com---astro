@@ -2,9 +2,10 @@
 interface Props {
   href: string;
   external?: boolean;
+  classes?: string;
 }
 
-const { href, external } = Astro.props;
+const { href, classes, external } = Astro.props;
 
 const target = external ? "_blank" : undefined;
 ---
@@ -12,7 +13,7 @@ const target = external ? "_blank" : undefined;
 <a
   href={href}
   target={target}
-  class="underline text-cyan-200 hover:text-cyan-400"
+  class={`underline text-cyan-200 hover:text-cyan-400 ${classes}`}
 >
   <slot />
 </a>

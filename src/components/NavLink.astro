@@ -2,24 +2,34 @@
 interface Props {
   text: string;
   href: string;
+  icon: string;
 }
 
-const { href, text } = Astro.props;
+const { href, text, icon } = Astro.props;
 const { pathname } = new URL(Astro.url);
 ---
 
 <a
   href={href}
   class:list={[
-    "flex",
-    "justify-center",
-    "items-center",
-    "rounded-md",
-    "bg-blue-700",
-    "hover:bg-blue-800",
-    "active:bg-purple-800",
-    "px-6",
-    "py-2",
+    "nav-link",
     { "bg-blue-900": href === pathname },
-  ]}><span>{text}</span></a
+  ]}>
+    <i class={`iconoir-${icon}`}></i>
+    <span>{text}</span>
+  </a
 >
+
+<style>
+  @tailwind components;
+
+  @layer components {
+    .nav-link {
+      @apply bg-blue-700 hover:bg-blue-800 active:bg-purple-800;
+      @apply flex gap-1 items-center;
+      @apply rounded-md;
+      @apply px-6 py-2;
+      @apply md:justify-center;
+    }
+  }
+</style>

@@ -1,9 +1,17 @@
 ---
+import ArtLink from '../components/ArtLink.astro';
+import Heading from '../components/Heading.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Welcome to Avram Eisner dot com.">
-	<p>Art</p>
+	<Heading level={1}>My Art</Heading>
+	<ul class="grid grid-cols-3 gap-10">
+		<ArtLink url="img/art/alien-world.jpg">Alien World</ArtLink>
+		<ArtLink url="img/art/crab.jpg">Crab in Eel Grass</ArtLink>
+		<ArtLink url="img/art/ganesh.jpg">Ganesh</ArtLink>
+		<ArtLink url="img/art/neon-forest.jpg">Neon Forest</ArtLink>
+	</ul>
 </Layout>
 
 <style>
