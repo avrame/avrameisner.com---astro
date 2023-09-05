@@ -12,57 +12,38 @@ import Layout from '../layouts/Layout.astro';
 		<ArtLink url="img/art/ganesh.jpg">Ganesh</ArtLink>
 		<ArtLink url="img/art/neon-forest.jpg">Neon Forest</ArtLink>
 	</ul>
+	<dialog id="lightbox">
+		<button class="close"><i class="iconoir-cancel"></i></button>
+		<button class="prev-image"><i class="iconoir-nav-arrow-left"></i></button>
+		<div class="image"></div>
+		<button class="next-image"><i class="iconoir-nav-arrow-right"></i></button>
+	</dialog>
 </Layout>
 
 <script>
+	// *** START ELEMENTS ***
 	const lightbox_links_container = document.querySelector('.lightbox-links-container')
+	const lightbox_links = lightbox_links_container.querySelectorAll('a')
+	const lightbox = document.getElementById('lightbox')
+	const img_div = document.querySelector('#lightbox .image')
+	const close_btn = document.querySelector('#lightbox .close')
+	const prev_img_btn = document.querySelector('#lightbox .prev-image')
+	const next_img_btn = document.querySelector('#lightbox .next-image')
+	// *** END ELEMENTS ***
+
 	lightbox_links_container?.addEventListener('click', show_lightbox)
 
-	const lightbox_links = document.querySelectorAll('.lightbox-links-container a')
 	const img_urls: Array<string | null> = []
 	lightbox_links?.forEach(lb_link => {
 		img_urls.push(lb_link.getAttribute('href'))
 	})
 	let img_idx = 0
 
-	const dialog = document.createElement('dialog')
-	dialog.classList.add('lightbox')
-
-	const image_div = document.createElement('div')
-	image_div.classList.add('lightbox-image')
-
-	const close_btn = document.createElement('button')
-	close_btn.classList.add('close')
 	close_btn.addEventListener('click', hide_lightbox)
-
-	const close_icon = document.createElement('i')
-	close_icon.classList.add('iconoir-cancel')
-	close_btn.appendChild(close_icon)
-
-	const next_img_btn = document.createElement('button')
-	next_img_btn.classList.add('next-image')
+	prev_img_btn.addEventListener('click', show_prev_image)
 	next_img_btn.addEventListener('click', show_next_image)
 
-	const next_img_icon = document.createElement('i')
-	next_img_icon.classList.add('iconoir-nav-arrow-right')
-	next_img_btn.appendChild(next_img_icon)
-
-	const prev_img_btn = document.createElement('button')
-	prev_img_btn.classList.add('prev-image')
-	prev_img_btn.addEventListener('click', show_prev_image)
-
-	const prev_img_icon = document.createElement('i')
-	prev_img_icon.classList.add('iconoir-nav-arrow-left')
-	prev_img_btn.appendChild(prev_img_icon)
-
-	// Add everything to the DOM
-	dialog.appendChild(close_btn)
-	dialog.appendChild(prev_img_btn)
-	dialog.appendChild(image_div)
-	dialog.appendChild(next_img_btn)
-	document.body.appendChild(dialog)
-
-	// START FUNCTIONS
+	// *** START FUNCTIONS ***
 	function show_lightbox (event: Event) {
 		event.preventDefault()
 
@@ -70,19 +51,19 @@ import Layout from '../layouts/Layout.astro';
 		const link = target.parentElement
 
 		if (link?.tagName === 'A') {
-			const image_url = link.getAttribute('href')
-			if (image_url) {
-				img_idx = img_urls.indexOf(image_url)
-				set_image(image_url)
+			const img_url = link.getAttribute('href')
+			if (img_url) {
+				img_idx = img_urls.indexOf(img_url)
+				set_image(img_url)
 			}
 			// Attach keyboard events
 			document.addEventListener('keydown', handle_keyboard)
-			dialog.classList.add('fade-in')
+			lightbox.classList.add('fade-in')
+			lightbox.showModal()
 		}
 	}
 
 	function handle_keyboard(event: KeyboardEvent) {
-		// console.log(event.key)
 		switch(event.key) {
 			case 'ArrowRight':
 				show_next_image()
@@ -97,15 +78,16 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	function fade_out_lightbox () {
-		dialog.classList.remove('fade-out')
-		dialog.removeEventListener('transitionend', fade_out_lightbox)
+		lightbox.classList.remove('fade-out')
+		lightbox.close()
+		lightbox.removeEventListener('transitionend', fade_out_lightbox)
 	}
 
 	function hide_lightbox() {
-		dialog.classList.remove('fade-in')
-		dialog.classList.add('fade-out')
+		lightbox.classList.remove('fade-in')
+		lightbox.classList.add('fade-out')
 		document.removeEventListener('keydown', handle_keyboard)
-		dialog.addEventListener('transitionend', fade_out_lightbox)
+		lightbox.addEventListener('transitionend', fade_out_lightbox)
 	}
 
 	function show_next_image() {
@@ -121,51 +103,54 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	function set_image(img_url: string | null) {
-		if (img_url) image_div.style.backgroundImage = `url(${img_url})`
+		if (img_url) img_div.style.backgroundImage = `url(${img_url})`
 	}
-	// END FUNCTIONS
+	// *** END FUNCTIONS ***
 </script>
 
 <style is:global>
 	@tailwind components;
 
 	@layer components {
-		.lightbox .close {
-			@apply text-white text-4xl absolute right-2 top-2 flex justify-center items-center;
-		}
-		.lightbox .next-image, .lightbox .prev-image {
-			@apply text-white text-5xl flex justify-center items-center;
-		}
-	}
 
-	.lightbox {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: fixed;
-		width: 100vw;
-		height: 100vh;
-		left: 0;
-		top: 0;
-		z-index: -10;
-		background: rgba(0, 0, 0, 0.75);
-		opacity: 0;
-		transition: opacity .5s;
-	}
-	.lightbox.fade-in {
-		opacity: 1;
-		z-index: 100;
-	}
-	.lightbox.fade-out {
-		opacity: 0;
-		z-index: 100;
-	}
-	.lightbox .lightbox-image {
-		/* width: calc(100vw - 6rem); */
-		height: calc(100vh - 6rem);
-		flex: 1 1 auto;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: contain;
+		#lightbox {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			position: fixed;
+			width: 100vw;
+			height: 100vh;
+			max-width: 100vw;
+			max-height: 100vh;
+			left: 0;
+			top: 0;
+			z-index: -10;
+			background: rgba(0, 0, 0, 0.75);
+			opacity: 0;
+			transition: opacity .5s;
+		}
+		#lightbox .close {
+			@apply text-white hover:text-gray-400 text-4xl absolute right-2 top-2 flex justify-center items-center;
+		}
+		#lightbox .next-image, #lightbox .prev-image {
+			@apply text-white hover:text-gray-400 text-5xl flex justify-center items-center;
+			height: calc(100% - 25vh);
+		}
+		#lightbox.fade-in {
+			opacity: 1;
+			z-index: 100;
+		}
+		#lightbox.fade-out {
+			opacity: 0;
+			z-index: 100;
+		}
+		#lightbox .image {
+			/* width: calc(100vw - 6rem); */
+			height: calc(100vh - 6rem);
+			flex: 1 1 auto;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: contain;
+		}
 	}
 </style>
