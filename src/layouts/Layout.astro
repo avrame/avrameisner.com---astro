@@ -27,7 +27,7 @@ const { title } = Astro.props;
   <body>
     <div class="wrapper">
       <Header />
-      <div class="border-t-slate-200 border-t-2 h-48 hero"></div>
+      <div class="hero"></div>
       <main>
         <slot />
       </main>
@@ -51,12 +51,18 @@ const { title } = Astro.props;
       @apply flex-auto relative p-4;
       @apply border-t-2 h-full;
       @apply md:p-10 md:rounded-b-md;
-      /* min-height: calc(100vh - 316px); */
     }
   }
 
   .hero {
+    aspect-ratio: 1.61803; /* oh, I'm such a nerd */
+    box-sizing: border-box;
     background: center / cover no-repeat
       url(https://dummyimage.com/800x360/fff/aaa);
+  }
+  @media (min-width: 768px)  {
+      .hero {
+        aspect-ratio: 2;
+      }
   }
 </style>
