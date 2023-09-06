@@ -1,9 +1,12 @@
 ---
 import Nav from "./Nav.astro";
+import { Icon } from 'astro-icon'
 ---
 
 <header>
-  <button id="open_nav_btn"><i class="iconoir-menu"></i></button>
+  <button id="open_nav_btn">
+    <Icon pack="iconoir" name="menu">
+  </button>
   <a href="/"><div class="logo"><span>AE</span></div></a>
   <Nav />
 </header>
@@ -22,8 +25,14 @@ import Nav from "./Nav.astro";
 
   @layer components {
     #open_nav_btn {
-      @apply text-2xl text-slate-200 absolute left-2 top-2;
+      @apply text-2xl text-slate-200 absolute left-3 top-3;
       @apply md:hidden;
+      &:active {
+        @apply text-slate-400;
+      }
+      [astro-icon] {
+        @apply w-6 h-6;
+      }
     }
     .logo {
       @apply bg-purple-800 text-white shadow-inner shadow-slate-800 border-black;

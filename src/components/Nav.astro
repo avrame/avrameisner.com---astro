@@ -1,5 +1,6 @@
 ---
 import NavLink from "./NavLink.astro";
+import { Icon } from 'astro-icon'
 ---
 
 <nav
@@ -7,12 +8,12 @@ import NavLink from "./NavLink.astro";
   class="-translate-x-full"
 >
   <button id="close_nav_btn">
-    <i class="iconoir-cancel"></i>
+    <Icon pack="iconoir" name="cancel" />
   </button>
   <NavLink text="Home" href="/" icon="home" />
   <NavLink text="Resume" href="/resume" icon="page" />
-  <NavLink text="Art" href="/art" icon="palette" />
   <NavLink text="Code" href="/code" icon="code" />
+  <NavLink text="Art" href="/art" icon="palette" />
 </nav>
 
 <style>
@@ -28,7 +29,13 @@ import NavLink from "./NavLink.astro";
       @apply md:relative md:flex-row md:items-center md:text-lg md:translate-x-0 md:shadow-none md:p-4;
     }
     #close_nav_btn {
-      @apply text-3xl absolute left-2 top-2 md:hidden;
+      @apply absolute left-2 top-2 md:hidden;
+      &:active {
+        @apply text-slate-400;
+      }
+      [astro-icon] {
+        @apply w-8 h-8;
+      }
     }
   }
 </style>

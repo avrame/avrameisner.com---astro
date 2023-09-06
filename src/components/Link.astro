@@ -3,10 +3,11 @@ interface Props {
   href: string;
   external?: boolean;
   classes?: string;
+  icon?: string;
 }
+import { Icon } from "astro-icon"
 
-const { href, classes, external } = Astro.props;
-
+const { href, classes, external, icon } = Astro.props;
 const target = external ? "_blank" : undefined;
 ---
 
@@ -15,5 +16,18 @@ const target = external ? "_blank" : undefined;
   target={target}
   class={`underline text-cyan-200 hover:text-cyan-400 ${classes}`}
 >
+  {icon && <Icon pack="iconoir" name={icon} />}
   <slot />
 </a>
+
+<style>
+  @tailwind components;
+
+  @layer components{
+    a {
+      [astro-icon] {
+        @apply w-4 h-4;
+      }
+    }
+  }
+</style>

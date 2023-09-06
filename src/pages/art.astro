@@ -2,6 +2,7 @@
 import ThumbnailLink from '../components/ThumbnailLink.astro';
 import Heading from '../components/Heading.astro';
 import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon'
 ---
 
 <Layout title="Welcome to Avram Eisner dot com.">
@@ -13,13 +14,13 @@ import Layout from '../layouts/Layout.astro';
 		<ThumbnailLink url="img/art/neon-forest.jpg">Neon Forest</ThumbnailLink>
 	</ul>
 	<dialog id="lightbox">
-		<button class="close"><i class="iconoir-cancel"></i></button>
-		<button class="prev-image"><i class="iconoir-nav-arrow-left"></i></button>
+		<button class="close"><Icon pack="iconoir" name="cancel" /></button>
+		<button class="prev-image"><Icon pack="iconoir" name="nav-arrow-left" /></button>
 		 <figure>
 			<img alt="">
 			<figcaption></figcaption>
 		</figure> 
-		<button class="next-image"><i class="iconoir-nav-arrow-right"></i></button>
+		<button class="next-image"><Icon pack="iconoir" name="nav-arrow-right" /></button>
 	</dialog>
 </Layout>
 
@@ -133,7 +134,7 @@ import Layout from '../layouts/Layout.astro';
 	@layer components {
 		#lightbox {
 			display: flex;
-			justify-content: space-around;
+			justify-content: space-between;
 			align-items: center;
 			position: fixed;
 			width: 100vw;
@@ -146,28 +147,41 @@ import Layout from '../layouts/Layout.astro';
 			background: rgba(0, 0, 0, 0.75);
 			opacity: 0;
 			transition: opacity .5s;
-		}
-		#lightbox .close {
-			@apply text-white hover:text-gray-400 text-4xl absolute right-2 top-2 flex justify-center items-center;
-		}
-		#lightbox .next-image, #lightbox .prev-image {
-			@apply text-white hover:text-gray-400 text-5xl flex justify-center items-center;
-			height: calc(100% - 25vh);
-		}
-		#lightbox.fade-in {
-			opacity: 1;
-			z-index: 100;
-		}
-		#lightbox.fade-out {
-			opacity: 0;
-			z-index: 100;
-		}
-		#lightbox figure img {
-			@apply rounded-md;
-			max-height: calc(100vh - 6rem);
-		}
-		#lightbox figure figcaption {
-			@apply text-white text-center italic mt-2;
+
+			&.fade-in {
+				opacity: 1;
+				z-index: 100;
+			}
+			&.fade-out {
+				opacity: 0;
+				z-index: 100;
+			}
+			.close {
+				@apply text-white hover:text-gray-400 text-4xl absolute right-2 top-2 flex justify-center items-center;
+				[astro-icon] {
+					@apply w-8 h-8;
+				}
+			}
+			.next-image, .prev-image {
+				@apply text-white hover:text-gray-400 text-5xl flex justify-center items-center;
+				height: calc(100% - 25vh);
+				[astro-icon] {
+					@apply w-9 h-9;
+				}
+			}
+			.prev-image {
+				@apply ml-2;
+			}
+			.next-image {
+				@apply mr-2;
+			}
+			figure img {
+				@apply rounded-md;
+				max-height: calc(100vh - 6rem);
+			}
+			figure figcaption {
+				@apply text-white text-center italic mt-2;
+			}
 		}
 	}
 </style>

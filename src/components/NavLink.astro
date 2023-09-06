@@ -5,6 +5,8 @@ interface Props {
   icon: string;
 }
 
+import { Icon } from 'astro-icon'
+
 const { href, text, icon } = Astro.props;
 const { pathname } = new URL(Astro.url);
 ---
@@ -13,9 +15,9 @@ const { pathname } = new URL(Astro.url);
   href={href}
   class:list={[
     "nav-link",
-    { "bg-blue-900": href === pathname },
+    { "active": href === pathname },
   ]}>
-    <i class={`iconoir-${icon}`}></i>
+    <Icon pack="iconoir" name={icon} />
     <span>{text}</span>
   </a
 >
@@ -26,10 +28,17 @@ const { pathname } = new URL(Astro.url);
   @layer components {
     .nav-link {
       @apply bg-blue-700 hover:bg-blue-800 active:bg-purple-800;
-      @apply flex gap-1 items-center;
+      @apply flex gap-2 items-center;
       @apply rounded-md;
       @apply px-6 py-2;
       @apply md:justify-center;
+      &.active {
+        @apply bg-blue-900;
+      }
+
+      [astro-icon] {
+        @apply w-5 h-5;
+      }
     }
   }
 </style>
