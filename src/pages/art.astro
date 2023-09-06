@@ -1,5 +1,5 @@
 ---
-import ArtLink from '../components/ArtLink.astro';
+import ThumbnailLink from '../components/ThumbnailLink.astro';
 import Heading from '../components/Heading.astro';
 import Layout from '../layouts/Layout.astro';
 ---
@@ -7,25 +7,35 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Welcome to Avram Eisner dot com.">
 	<Heading level={1}>My Art</Heading>
 	<ul class="grid grid-cols-3 gap-10 lightbox-links-container">
-		<ArtLink url="img/art/alien-world.jpg">Alien World</ArtLink>
-		<ArtLink url="img/art/crab.jpg">Crab in Eel Grass</ArtLink>
-		<ArtLink url="img/art/ganesh.jpg">Ganesh</ArtLink>
-		<ArtLink url="img/art/neon-forest.jpg">Neon Forest</ArtLink>
+		<ThumbnailLink url="img/art/alien-world.jpg">Alien World</ThumbnailLink>
+		<ThumbnailLink url="img/art/crab.jpg">Crab in Eel Grass</ThumbnailLink>
+		<ThumbnailLink url="img/art/ganesh.jpg">Ganesh</ThumbnailLink>
+		<ThumbnailLink url="img/art/neon-forest.jpg">Neon Forest</ThumbnailLink>
 	</ul>
 	<dialog id="lightbox">
 		<button class="close"><i class="iconoir-cancel"></i></button>
 		<button class="prev-image"><i class="iconoir-nav-arrow-left"></i></button>
-		<div class="image"></div>
+		 <figure>
+			<img alt="">
+			<figcaption></figcaption>
+		</figure> 
 		<button class="next-image"><i class="iconoir-nav-arrow-right"></i></button>
 	</dialog>
 </Layout>
 
 <script>
+	interface ImageData {
+		url: string | null
+		title?: string
+	}
+
 	// *** START ELEMENTS ***
+	let img_idx = 0
 	const lightbox_links_container = document.querySelector('.lightbox-links-container')
-	const lightbox_links = lightbox_links_container.querySelectorAll('a')
-	const lightbox = document.getElementById('lightbox')
-	const img_div = document.querySelector('#lightbox .image')
+	const lightbox_links = lightbox_links_container?.querySelectorAll('a')
+	const lightbox = document.getElementById('lightbox') as HTMLDialogElement
+	const lightbox_img = document.querySelector('#lightbox img')
+	const img_caption = document.querySelector('#lightbox figcaption')
 	const close_btn = document.querySelector('#lightbox .close')
 	const prev_img_btn = document.querySelector('#lightbox .prev-image')
 	const next_img_btn = document.querySelector('#lightbox .next-image')
@@ -33,33 +43,32 @@ import Layout from '../layouts/Layout.astro';
 
 	lightbox_links_container?.addEventListener('click', show_lightbox)
 
-	const img_urls: Array<string | null> = []
+	const images: Array<ImageData> = []
 	lightbox_links?.forEach(lb_link => {
-		img_urls.push(lb_link.getAttribute('href'))
+		images.push(get_img_data(lb_link))
 	})
-	let img_idx = 0
 
-	close_btn.addEventListener('click', hide_lightbox)
-	prev_img_btn.addEventListener('click', show_prev_image)
-	next_img_btn.addEventListener('click', show_next_image)
+	close_btn?.addEventListener('click', hide_lightbox)
+	prev_img_btn?.addEventListener('click', show_prev_image)
+	next_img_btn?.addEventListener('click', show_next_image)
 
 	// *** START FUNCTIONS ***
 	function show_lightbox (event: Event) {
 		event.preventDefault()
 
 		const target = event.target as Element
-		const link = target.parentElement
+		const link = target.closest('a') as HTMLAnchorElement
 
 		if (link?.tagName === 'A') {
-			const img_url = link.getAttribute('href')
-			if (img_url) {
-				img_idx = img_urls.indexOf(img_url)
-				set_image(img_url)
+			const img_data = get_img_data(link)
+			if (img_data.url) {
+				img_idx = images.findIndex(imgObj => imgObj.url === img_data.url)
+				set_figure(img_data)
 			}
 			// Attach keyboard events
 			document.addEventListener('keydown', handle_keyboard)
-			lightbox.classList.add('fade-in')
-			lightbox.showModal()
+			lightbox?.classList.add('fade-in')
+			lightbox?.showModal()
 		}
 	}
 
@@ -92,18 +101,28 @@ import Layout from '../layouts/Layout.astro';
 
 	function show_next_image() {
 		const new_idx = img_idx + 1
-		img_idx = (new_idx === img_urls.length) ? 0 : new_idx
-		set_image(img_urls[img_idx])
+		img_idx = (new_idx === images.length) ? 0 : new_idx
+		set_figure(images[img_idx])
 	}
 
 	function show_prev_image() {
 		const new_idx = img_idx - 1
-		img_idx = (new_idx < 0) ? img_urls.length - 1 : new_idx
-		set_image(img_urls[img_idx])
+		img_idx = (new_idx < 0) ? images.length - 1 : new_idx
+		set_figure(images[img_idx])
 	}
 
-	function set_image(img_url: string | null) {
-		if (img_url) img_div.style.backgroundImage = `url(${img_url})`
+	function get_img_data(link: HTMLAnchorElement): ImageData {
+		const url = link.getAttribute('href')
+		const title = link.querySelector('.title')?.innerHTML
+		return { url, title }
+	}
+
+	function set_figure({url, title}: ImageData) {
+		if (url) lightbox_img?.setAttribute('src', url)
+		if (title) {
+			lightbox_img?.setAttribute('alt', title)
+			if (img_caption) img_caption.innerHTML = title
+		}
 	}
 	// *** END FUNCTIONS ***
 </script>
@@ -112,7 +131,6 @@ import Layout from '../layouts/Layout.astro';
 	@tailwind components;
 
 	@layer components {
-
 		#lightbox {
 			display: flex;
 			justify-content: space-around;
@@ -144,13 +162,12 @@ import Layout from '../layouts/Layout.astro';
 			opacity: 0;
 			z-index: 100;
 		}
-		#lightbox .image {
-			/* width: calc(100vw - 6rem); */
-			height: calc(100vh - 6rem);
-			flex: 1 1 auto;
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: contain;
+		#lightbox figure img {
+			@apply rounded-md;
+			max-height: calc(100vh - 6rem);
+		}
+		#lightbox figure figcaption {
+			@apply text-white text-center italic mt-2;
 		}
 	}
 </style>
