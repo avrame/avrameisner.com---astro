@@ -1,9 +1,10 @@
 ---
-const {url} = Astro.props;
+const { url } = Astro.props;
+const aria_label = await Astro.slots.render('default');
 ---
 
 <li class="thumbnail-link">
-  <a href={url} style={`background-image: url(${url});`}>
+  <a href={url} style={`background-image: url(${url});`} aria-label={aria_label}>
     <div class="back-drop">
       <span class="title"><slot /></span>
     </div>
