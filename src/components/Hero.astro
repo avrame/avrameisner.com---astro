@@ -1,0 +1,121 @@
+<div id="canvas_container"></div>
+
+<style>
+  #canvas_container {
+    aspect-ratio: 1.61803; /* oh, I'm such a nerd */
+    box-sizing: border-box;
+    @media (min-width: 768px)  {
+      aspect-ratio: 2;
+    }
+  }
+</style>
+
+<script>
+  import * as PIXI from 'pixi.js';
+  import '@pixi/math-extras'
+
+  const BG_COLOR = '#000'
+  const LINE_COLOR = 0x22d3ee //0x6b21a8
+  const LINE_WIDTH = 1.25
+  const VERTEX_COLOR = 0xDD0064
+  const VERTEX_RADIUS = 2
+  const VERTEX_SPARSITY = 1500
+  const MAX_VERTEX_VEL = .15
+  const MAX_LINE_LENGTH = 110
+  const OUTER_PADDING = 20
+
+  const canvas_container = document.querySelector('#canvas_container') as HTMLDivElement
+  const app = new PIXI.Application({ background: BG_COLOR, antialias: true, resizeTo: canvas_container })
+  canvas_container.appendChild(app.view as HTMLCanvasElement);
+
+  const NUM_VERTEXES = Math.round(app.screen.width * app.screen.height / VERTEX_SPARSITY)
+  const MIN_WIDTH_VIRT_SCREEN = 0 - OUTER_PADDING
+  const MAX_WIDTH_VIRT_SCREEN = app.screen.width + OUTER_PADDING
+  const MIN_HEIGHT_VIRT_SCREEN = 0 - OUTER_PADDING
+  const MAX_HEIGHT_VIRT_SCREEN = app.screen.height + OUTER_PADDING
+
+  const graphics = new PIXI.Graphics();
+
+  class Vertex {
+    pos: PIXI.Point
+    vel: PIXI.Point
+
+    constructor(x: number, y: number, vel: PIXI.Point) {
+      this.pos = new PIXI.Point(x, y)
+      this.vel = vel
+    }
+
+    move(delta: number) {
+      if (this.pos.x < MIN_WIDTH_VIRT_SCREEN) {
+        this.pos.x = MIN_WIDTH_VIRT_SCREEN
+        this.vel.x = -this.vel.x
+      } else if (this.pos.x > MAX_WIDTH_VIRT_SCREEN) {
+        this.pos.x = MAX_WIDTH_VIRT_SCREEN
+        this.vel.x = -this.vel.x
+      }
+
+      if (this.pos.y < MIN_HEIGHT_VIRT_SCREEN) {
+        this.pos.y = MIN_HEIGHT_VIRT_SCREEN
+        this.vel.y = -this.vel.y
+      } else if (this.pos.y > MAX_HEIGHT_VIRT_SCREEN) {
+        this.pos.y = MAX_HEIGHT_VIRT_SCREEN
+        this.vel.y = -this.vel.y
+      }
+
+      const adjusted_velocity = this.vel.multiplyScalar(delta)
+      this.pos = this.pos.add(adjusted_velocity)
+    }
+  }
+
+  const vertexes: Vertex[] = []
+  for (let i = 0; i < NUM_VERTEXES; i++) {
+    const randX = get_random_range(-OUTER_PADDING, MAX_WIDTH_VIRT_SCREEN)
+    const randY = get_random_range(-OUTER_PADDING, MAX_HEIGHT_VIRT_SCREEN)
+    const randXrange = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
+    const randYrange = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
+    const randVel = new PIXI.Point(randXrange, randYrange)
+
+    vertexes.push(new Vertex(randX, randY, randVel))
+  }
+
+  app.ticker.add((delta) => {
+    graphics.clear()
+    
+    for (let i = 0; i < NUM_VERTEXES; i++) {
+      for (let j = i + 1; j < NUM_VERTEXES; j++) {
+        const v1 = vertexes[i].pos
+        const v2 = vertexes[j].pos
+        const x_dist = Math.abs(v1.x - v2.x)
+        const y_dist = Math.abs(v1.y - v2.y)
+        const dist = Math.sqrt(x_dist ** 2 + y_dist ** 2)
+        if (dist < MAX_LINE_LENGTH) {
+          const alpha = 1 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1)
+          graphics.lineStyle(LINE_WIDTH, LINE_COLOR, alpha);
+          graphics.moveTo(v1.x, v1.y)
+          graphics.lineTo(v2.x, v2.y)
+          graphics.closePath()
+        }
+      }
+    }
+
+
+    graphics.beginFill(VERTEX_COLOR);
+    for (const v of vertexes) {
+      graphics.drawCircle(v.pos.x, v.pos.y, VERTEX_RADIUS)
+      // move vertex
+      v.move(delta)
+    }
+    graphics.endFill()
+
+    app.stage.addChild(graphics);
+  });
+
+  function get_random_range(min: number, max: number) {
+    return Math.random() * (max - min) + min
+  }
+
+  function lerp(x: number, from_min: number, from_max: number, to_min: number, to_max: number) {
+    const ratio = x / (from_max - from_min)
+    return ratio * (to_max - to_min)
+  }
+</script>

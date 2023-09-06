@@ -7,7 +7,7 @@ interface Props {
 }
 import { Icon } from "astro-icon"
 
-const { href, classes, external, icon } = Astro.props;
+const { href, classes = '', external, icon } = Astro.props;
 const target = external ? "_blank" : undefined;
 ---
 

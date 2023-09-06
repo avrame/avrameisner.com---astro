@@ -20,25 +20,25 @@ import Link from "../components/Link.astro";
 
 <Layout title="Avram Eisner's Resume">
   <div class="resume flex flex-col gap-8">
-    <address class="vcard">
-      <img class="headshot" src="/img/avram-eisner-headshot.jpg" width="256" />
+    <address>
+      <img class="headshot" src="/img/avram-eisner-headshot.webp" width="256" alt="Avram Eisner Headshot" />
       <Heading level={1}>Avram C. Eisner</Heading>
       <span class="adr">
         <span class="street-address">4130 38th Ave SW</span><br />
-        <span class="locality">Seattle</span><span>,</span><span class="region">
-          WA
-        </span>
-         &nbsp;<span class="postal-code">98126</span><br />
+        <span class="locality">Seattle</span><span>,</span>
+        &nbsp;<span class="region">WA</span>
+        &nbsp;<span class="postal-code">98126</span><br />
       </span>
-      <Link href="mailto:avrame@gmail.com">avrame@gmail.com</Link><br />
-      <Link href="tel:1-206-214-8363">1 (206) 214-8363</Link><br /><br />
-      <Link href="http://www.linkedin.com/in/avrame" icon="linkedin" classes="text-sm flex items-center gap-1" external>
+      <Link href="mailto:avrame@gmail.com" classes="inline-block py-2 md:p-0">avrame@gmail.com</Link><br />
+      <Link href="tel:1-206-214-8363" classes="inline-block py-2 md:p-0">1 (206) 214-8363</Link><br />
+      <br />
+      <Link href="http://www.linkedin.com/in/avrame" icon="linkedin" classes="text-sm flex items-center gap-1 py-2 md:p-0" external>
         www.linkedin.com/in/avrame
       </Link>
-      <Link href="https://www.github.com/avrame" icon="github" classes="text-sm flex items-center gap-1" external>
+      <Link href="https://www.github.com/avrame" icon="github" classes="text-sm flex items-center gap-1 py-2 md:p-0" external>
         www.github.com/avrame
       </Link>
-      <Link href="/downloads/Avram-Eisner-Resume.pdf" icon="download" classes="text-sm flex items-center gap-1" external>
+      <Link href="/downloads/Avram-Eisner-Resume.pdf" icon="download" classes="text-sm flex items-center gap-1 py-2 md:p-0" external>
         Download my resume
       </Link>
     </address>
@@ -420,8 +420,8 @@ import Link from "../components/Link.astro";
       <Heading level={2}>Honors / Awards</Heading>
       <ul>
         <li>
-          <Heading level={3}>Dean's List, UW <small class="text-indigo-400">3 quarters</small></Heading>
-          <Heading level={3}>Washington State Honors Award <small class="text-indigo-400">(top 10% of high school graduating class)</small></Heading>
+          <Heading level={3}>Dean's List, UW <small class="text-indigo-300">3 quarters</small></Heading>
+          <Heading level={3}>Washington State Honors Award <small class="text-indigo-300">(top 10% of high school graduating class)</small></Heading>
         </li>
       </ul>
     </section>

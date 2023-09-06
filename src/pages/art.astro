@@ -8,19 +8,19 @@ import { Icon } from 'astro-icon'
 <Layout title="Welcome to Avram Eisner dot com.">
 	<Heading level={1}>My Art</Heading>
 	<ul class="grid grid-cols-3 gap-10 lightbox-links-container">
-		<ThumbnailLink url="img/art/alien-world.jpg">Alien World</ThumbnailLink>
-		<ThumbnailLink url="img/art/crab.jpg">Crab in Eel Grass</ThumbnailLink>
-		<ThumbnailLink url="img/art/ganesh.jpg">Ganesh</ThumbnailLink>
-		<ThumbnailLink url="img/art/neon-forest.jpg">Neon Forest</ThumbnailLink>
+		<ThumbnailLink url="img/art/alien-world.webp">Alien World</ThumbnailLink>
+		<ThumbnailLink url="img/art/crab.webp">Crab in Eel Grass</ThumbnailLink>
+		<ThumbnailLink url="img/art/ganesh.webp">Ganesh</ThumbnailLink>
+		<ThumbnailLink url="img/art/neon-forest.webp">Neon Forest</ThumbnailLink>
 	</ul>
 	<dialog id="lightbox">
-		<button class="close"><Icon pack="iconoir" name="cancel" /></button>
-		<button class="prev-image"><Icon pack="iconoir" name="nav-arrow-left" /></button>
+		<button class="close" aria-label="Close"><Icon pack="iconoir" name="cancel" /></button>
+		<button class="prev-image" aria-label="Show Previous Image"><Icon pack="iconoir" name="nav-arrow-left" /></button>
 		 <figure>
 			<img alt="">
 			<figcaption></figcaption>
 		</figure> 
-		<button class="next-image"><Icon pack="iconoir" name="nav-arrow-right" /></button>
+		<button class="next-image" aria-label="Show Next Image"><Icon pack="iconoir" name="nav-arrow-right" /></button>
 	</dialog>
 </Layout>
 
