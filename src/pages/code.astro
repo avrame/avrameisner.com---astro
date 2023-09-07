@@ -1,12 +1,15 @@
 ---
 import Heading from '../components/Heading.astro';
+import ThumbnailLink from '../components/ThumbnailLink.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Welcome to Avram Eisner dot com.">
 	<Heading level={1}>Software Projects</Heading>
-	<ul class="grid grid-cols-3 gap-10">
-		<li><a href=""></a></li>
+	<ul class="grid grid-cols-3 gap-10 lightbox-links-container">
+		<ThumbnailLink url="img/code/minesweeper.webp">3D Tetris</ThumbnailLink>
+		<ThumbnailLink url="img/code/tetris.webp">Tetris</ThumbnailLink>
+		<ThumbnailLink url="img/code/3D-tetris.webp">3D Tetris</ThumbnailLink>
 	</ul>
 </Layout>
 
