@@ -1395,6 +1395,11 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
+dark-mode-toggle@^0.14.6:
+  version "0.14.6"
+  resolved "https://registry.yarnpkg.com/dark-mode-toggle/-/dark-mode-toggle-0.14.6.tgz#3cb8f494ec96d9dd05394364cf5d28d348d14824"
+  integrity sha512-I27vghhZXYfGqLjR90R8WnNUU6AFldMOAuBI13RsKQ16NlWCUW9aj3zj7fvel5TqGZPFOhDsoRVzbI/m+VTimQ==
+
 data-uri-to-buffer@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"

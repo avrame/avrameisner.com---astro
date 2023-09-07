@@ -9,7 +9,6 @@ let Tag;
 let text_size;
 let text_color;
 let margin_btm;
-let other_classes;
 switch (level) {
   case 1:
     Tag = "h1";
@@ -19,19 +18,19 @@ switch (level) {
   case 2:
     Tag = "h2";
     text_size = "text-2xl";
-    text_color = "text-cyan-300";
+    text_color = "text-cyan-800 dark:text-cyan-300";
     margin_btm = "mb-3";
     break;
   case 3:
     Tag = "h3";
     text_size = "text-xl";
-    text_color = "text-fuchsia-300";
+    text_color = "text-fuchsia-800 dark:text-fuchsia-300";
     margin_btm = "mb-2";
     break;
   case 4:
     Tag = "h4";
     text_size = "text-lg";
-    text_color = "text-indigo-300";
+    text_color = "text-indigo-800 dark:text-indigo-300";
     margin_btm = "mb-2";
     break;
   case 5:
@@ -47,6 +46,6 @@ switch (level) {
 }
 ---
 
-<Tag class:list={[text_size, margin_btm, text_color, other_classes]}>
+<Tag class:list={[text_size, margin_btm, text_color]}>
   <slot />
 </Tag>

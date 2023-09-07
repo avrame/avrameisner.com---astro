@@ -27,13 +27,14 @@ const { pathname } = new URL(Astro.url);
 
   @layer components {
     .nav-link {
-      @apply bg-blue-700 hover:bg-blue-800 active:bg-purple-800;
-      @apply flex gap-2 items-center;
+      @apply text-slate-900 bg-blue-400 hover:bg-blue-500 active:bg-blue-700;
+      @apply  dark:text-slate-200 dark:bg-blue-700 dark:hover:bg-blue-800 dark:active:bg-purple-800;
+      @apply flex gap-2 items-center transition-colors;
       @apply rounded-md;
       @apply px-6 py-2;
       @apply md:justify-center;
       &.active {
-        @apply bg-blue-900;
+        @apply dark:bg-blue-900;
       }
 
       [astro-icon] {
