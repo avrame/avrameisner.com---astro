@@ -4,7 +4,20 @@ import Link from "../components/Link.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
+<style>
+  @tailwind components;
+
+  @layer components {
+    .headshot {
+      @apply border-indigo-400 border-4 shadow-lg shadow-slate-800;
+      @apply rounded-md float-left mr-4 w-5/12;
+      max-width: 256px;
+    }
+  }
+</style>
+
 <Layout title="Welcome to Avram Eisner dot com.">
+  <img class="headshot" src="/img/avram-eisner-headshot.webp" width="256" height="256" alt="Avram Eisner Headshot" />
   <Heading level={1}>Hi, I'm Avi Eisner</Heading>
   <p class="mb-2">
     I'm a full-stack web developer who lives in Seattle, Washington. Besides

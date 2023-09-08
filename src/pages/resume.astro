@@ -6,31 +6,16 @@ import UnorderedList from "../components/UnorderedList.astro";
 import Link from "../components/Link.astro";
 ---
 
-<style>
-  @tailwind components;
-
-  @layer components {
-    .headshot {
-      @apply border-indigo-400 border-4 shadow-lg shadow-slate-800;
-      @apply rounded-md float-right ml-4 w-5/12;
-      max-width: 256px;
-    }
-  }
-</style>
-
 <Layout title="Avram Eisner's Resume">
   <div class="resume flex flex-col gap-8">
     <address>
-      <img class="headshot" src="/img/avram-eisner-headshot.webp" width="256" height="256" alt="Avram Eisner Headshot" />
       <Heading level={1}>Avram C. Eisner</Heading>
       <span class="adr">
-        <span class="street-address">4130 38th Ave SW</span><br />
         <span class="locality">Seattle</span><span>,</span>
-        &nbsp;<span class="region">WA</span>
-        &nbsp;<span class="postal-code">98126</span><br />
+        &nbsp;<span class="region">WA</span><br />
       </span>
       <Link href="mailto:avrame@gmail.com" classes="inline-block py-2 md:p-0">avrame@gmail.com</Link><br />
-      <Link href="tel:1-206-214-8363" classes="inline-block py-2 md:p-0">1 (206) 214-8363</Link><br />
+      <Link href="tel:206-214-8363" classes="inline-block py-2 md:p-0">(206) 214-8363</Link><br />
       <br />
       <Link href="http://www.linkedin.com/in/avrame" icon="linkedin" classes="text-sm flex items-center gap-1 py-2 md:p-0" external>
         www.linkedin.com/in/avrame
@@ -65,7 +50,7 @@ import Link from "../components/Link.astro";
 
     <section class="related-experience flex flex-col gap-4">
       <Heading level={2}>Related Experience</Heading>
-      <ol class="vcalendar flex flex-col gap-4">
+      <ol class="vcalendar flex flex-col gap-6">
         <ResumeExperience
           org="Persefoni AI, Inc."
           title="Senior Frontend Web Developer"
