@@ -3,7 +3,6 @@ import ThumbnailLink from '../components/ThumbnailLink.astro';
 import Heading from '../components/Heading.astro';
 import Layout from '../layouts/Layout.astro';
 import "../styles/lightbox.css"
-import Lightbox from '../components/Lightbox.astro';
 ---
 
 <script src="../scripts/lightbox.ts" />
@@ -21,5 +20,4 @@ import Lightbox from '../components/Lightbox.astro';
 		<ThumbnailLink url="img/art/ganesh.webp" type="img" thumb="img/art/ganesh.webp">Ganesh</ThumbnailLink>
 		<ThumbnailLink url="img/art/neon-forest.webp" type="img" thumb="img/art/neon-forest.webp">Neon Forest</ThumbnailLink>
 	</ul>
-	<Lightbox />
 </Layout>
