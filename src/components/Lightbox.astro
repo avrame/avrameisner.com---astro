@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon'
+---
+<dialog id="lightbox">
+  <button class="close" aria-label="Close"><Icon pack="iconoir" name="cancel" /></button>
+  <button class="prev-image" aria-label="Show Previous Image"><Icon pack="iconoir" name="nav-arrow-left" /></button>
+  <div class="content-container"></div>
+  <button class="next-image" aria-label="Show Next Image"><Icon pack="iconoir" name="nav-arrow-right" /></button>
+</dialog>
+
+<template id="figure_template">
+  <figure>
+    <img alt="">
+    <figcaption></figcaption>
+  </figure>
+</template>
+
+<template id="iframe_template">
+  <iframe allowfullscreen></iframe>
+  <a class="source-code-url" target="_blank">See The Source Code</a>
+</template>

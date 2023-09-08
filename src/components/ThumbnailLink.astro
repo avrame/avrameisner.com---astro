@@ -1,10 +1,22 @@
 ---
-const { url } = Astro.props;
+interface Props {
+  url: string
+  thumb: string
+  type: 'img' | 'iframe'
+  src_code_url?: string
+}
+
+const { url, thumb, type, src_code_url } = Astro.props;
 const aria_label = await Astro.slots.render('default');
 ---
 
 <li class="thumbnail-link">
-  <a href={url} style={`background-image: url(${url});`} aria-label={aria_label}>
+  <a
+    href={url} style={`background-image: url(${thumb});`}
+    data-type={type}
+    data-src-code-url={src_code_url}
+    aria-label={aria_label}
+  >
     <div class="back-drop">
       <span class="title"><slot /></span>
     </div>
