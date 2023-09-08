@@ -1,10 +1,40 @@
 ---
+import Heading from '../components/Heading.astro';
+import Lightbox from '../components/Lightbox.astro';
+import ThumbnailLink from '../components/ThumbnailLink.astro';
 import Layout from '../layouts/Layout.astro';
+import "../styles/lightbox.css"
 ---
 
-<Layout title="Welcome to Avram Eisner dot com.">
-	<p>Code</p>
-</Layout>
+<script src="../scripts/lightbox.ts" />
 
-<style>
-</style>
+<Layout title="Welcome to Avram Eisner dot com.">
+	<Heading level={1}>Software Projects</Heading>
+	<ul class="grid grid-cols-3 gap-10 lightbox-links-container">
+		<ThumbnailLink
+			url="https://avrame.github.io/minesweeper/"
+			src_code_url="https://github.com/avrame/minesweeper"
+			type="iframe"
+			thumb="img/code/minesweeper.webp"
+		>
+			Minesweeper
+		</ThumbnailLink>
+		<ThumbnailLink
+			url="https://avrame.github.io/tetris/"
+			src_code_url="https://github.com/avrame/avrame.github.io/tree/master/tetris"
+			type="iframe"
+			thumb="img/code/tetris.webp"
+		>
+			Tetris
+		</ThumbnailLink>
+		<ThumbnailLink
+			url="https://avrame.github.io/3D-Tetris/"
+			type="iframe"
+			src_code_url="https://github.com/avrame/avrame.github.io/tree/master/3D-Tetris"
+			thumb="img/code/3D-tetris.webp"
+		>
+			3D Tetris
+		</ThumbnailLink>
+	</ul>
+	<Lightbox />
+</Layout>

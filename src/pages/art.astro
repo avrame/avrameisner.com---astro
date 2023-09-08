@@ -1,10 +1,25 @@
 ---
+import ThumbnailLink from '../components/ThumbnailLink.astro';
+import Heading from '../components/Heading.astro';
 import Layout from '../layouts/Layout.astro';
+import "../styles/lightbox.css"
+import Lightbox from '../components/Lightbox.astro';
 ---
 
-<Layout title="Welcome to Avram Eisner dot com.">
-	<p>Art</p>
-</Layout>
+<script src="../scripts/lightbox.ts" />
 
-<style>
-</style>
+
+<Layout title="Welcome to Avram Eisner dot com.">
+	<Heading level={1}>My Art</Heading>
+	<ul class="grid grid-cols-3 gap-10 lightbox-links-container">
+		<ThumbnailLink url="img/art/space-shuttle.webp" type="img" thumb="img/art/space-shuttle.webp">Space Shuttle</ThumbnailLink>
+		<ThumbnailLink url="img/art/voyager.webp" type="img" thumb="img/art/voyager.webp">Voyager</ThumbnailLink>
+		<ThumbnailLink url="img/art/gameboy.webp" type="img" thumb="img/art/gameboy.webp">Gameboy</ThumbnailLink>
+		<ThumbnailLink url="img/art/enchanted-sword.webp" type="img" thumb="img/art/enchanted-sword.webp">Enchanted Sword</ThumbnailLink>
+		<ThumbnailLink url="img/art/alien-world.webp" type="img" thumb="img/art/alien-world.webp">Alien World</ThumbnailLink>
+		<ThumbnailLink url="img/art/crab.webp" type="img" thumb="img/art/crab.webp">Crab in Eel Grass</ThumbnailLink>
+		<ThumbnailLink url="img/art/ganesh.webp" type="img" thumb="img/art/ganesh.webp">Ganesh</ThumbnailLink>
+		<ThumbnailLink url="img/art/neon-forest.webp" type="img" thumb="img/art/neon-forest.webp">Neon Forest</ThumbnailLink>
+	</ul>
+	<Lightbox />
+</Layout>

@@ -1,0 +1,54 @@
+---
+interface Props {
+  url: string
+  thumb: string
+  type: 'img' | 'iframe'
+  src_code_url?: string
+}
+
+const { url, thumb, type, src_code_url } = Astro.props;
+const aria_label = await Astro.slots.render('default');
+---
+
+<li class="thumbnail-link">
+  <a
+    href={url} style={`background-image: url(${thumb});`}
+    data-type={type}
+    data-src-code-url={src_code_url}
+    aria-label={aria_label}
+  >
+    <div class="back-drop">
+      <span class="title"><slot /></span>
+    </div>
+  </a>
+</li>
+
+<style>
+  @tailwind components;
+
+  @layer components {
+    .thumbnail-link {
+      @apply rounded-lg;
+      a {
+        @apply aspect-square bg-cover bg-center block w-full;
+        @apply rounded-lg;
+        &:hover {
+          .title {
+            @apply visible;
+          }
+          .back-drop {
+            background: rgba(0, 0, 48, .66);
+          }
+        }
+      }
+      .title {
+        @apply text-xl;
+        @apply invisible flex justify-center items-center w-full h-full;
+      }
+      .back-drop {
+          @apply w-full h-full;
+          @apply rounded-lg;
+      }
+    }
+  }
+</style>

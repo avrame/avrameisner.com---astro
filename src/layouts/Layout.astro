@@ -1,5 +1,6 @@
 ---
-import Nav from "../components/Nav.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
 
 interface Props {
   title: string;
@@ -8,26 +9,27 @@ interface Props {
 const { title } = Astro.props;
 ---
 
+<script src="../scripts/main_nav.ts"></script>
+<script src="../scripts/dark_mode.ts"></script>
+
 <!doctype html>
-<html lang="en" class="bg-blue-200">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="description"
-      content="The personal website of me, Avram Eisner."
+      content="The personal website of Avram Eisner."
     />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
-    <div class="container 2xl:max-w-screen-xl mx-auto mb-8">
-      <Nav />
-      <div class="bg-purple-500 border-t-slate-200 border-t-2 h-48 hero"></div>
-      <main
-        class="text-slate-200 bg-blue-900 p-14 rounded-b-md border-t-slate-200 border-t-2"
-      >
+  <body class="bg-blue-500 dark:bg-slate-900">
+    <div class="wrapper">
+      <Header />
+      <Hero />
+      <main>
         <slot />
       </main>
     </div>
@@ -35,8 +37,22 @@ const { title } = Astro.props;
 </html>
 
 <style is:global>
-  .hero {
-    background: center / cover no-repeat
-      url(https://dummyimage.com/800x360/fff/aaa);
+  @tailwind base;
+  @tailwind utilities;
+
+  @layer base {
+    .wrapper {
+      @apply flex flex-col items-stretch container lg:max-w-screen-lg mx-auto;
+      @apply shadow-xl shadow-slate-600;
+      @apply dark:shadow-none;
+      @apply md:rounded-b-md md:mb-8;
+      min-height: calc(100vh - 3rem);
+    }
+    main {
+      @apply text-slate-900 bg-blue-300;
+      @apply dark:text-slate-200 dark:bg-blue-900;
+      @apply flex-auto relative p-4 h-full;
+      @apply md:p-10 md:rounded-b-md;
+    }
   }
 </style>

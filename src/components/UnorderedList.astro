@@ -1,3 +1,6 @@
-<ul class="list-disc pl-4">
+---
+const { classes } = Astro.props;
+---
+<ul class={`list-disc pl-4 ${classes}`}>
   <slot />
 </ul>

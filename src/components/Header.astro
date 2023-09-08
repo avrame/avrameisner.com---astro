@@ -1,0 +1,53 @@
+---
+import Nav from "./Nav.astro";
+import { Icon } from 'astro-icon'
+---
+
+<header>
+  <button id="open_nav_btn" aria-label="Open Main Nav">
+    <Icon pack="iconoir" name="menu">
+  </button>
+  <a href="/"><div class="logo"><span>AE</span></div></a>
+  <Nav />
+  <dark-mode-toggle
+    id="dark-mode-toggle"
+    appearance="toggle"
+  ></dark-mode-toggle>
+</header>
+
+<style>
+  @tailwind base;
+  @tailwind components;
+
+  :root {
+    --dark-mode-toggle-icon-size: 2rem;
+  }
+
+  @layer base {
+    header {
+      @apply bg-blue-300 dark:bg-blue-700 shadow-md;
+      @apply z-50 flex flex-col items-center sticky inset-y-0 px-4;
+      @apply dark:md:bg-blue-600 md:justify-between md:flex-row;
+    }
+  }
+
+  @layer components {
+    #open_nav_btn {
+      @apply text-2xl text-slate-200 absolute left-3 top-3;
+      @apply md:hidden;
+      &:active {
+        @apply text-slate-400;
+      }
+      [astro-icon] {
+        @apply w-6 h-6;
+      }
+    }
+    .logo {
+      @apply bg-purple-800 text-white shadow-inner shadow-slate-800 border-black;
+      @apply w-12 h-12 flex justify-center items-center rounded-full;
+    }
+    dark-mode-toggle {
+      
+    }
+  }
+</style>
