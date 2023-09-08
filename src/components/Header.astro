@@ -12,6 +12,7 @@ import { Icon } from 'astro-icon'
   <dark-mode-toggle
     id="dark-mode-toggle"
     appearance="toggle"
+    permanent="true"
   ></dark-mode-toggle>
 </header>
 
@@ -21,6 +22,8 @@ import { Icon } from 'astro-icon'
 
   :root {
     --dark-mode-toggle-icon-size: 2rem;
+    --dark-mode-toggle-light-icon: url(/img/dark-mode/sun-light.svg);
+    --dark-mode-toggle-dark-icon: url(/img/dark-mode/half-moon.svg);
   }
 
   @layer base {
@@ -32,6 +35,9 @@ import { Icon } from 'astro-icon'
   }
 
   @layer components {
+    dark-mode-toggle {
+      width: 2.5rem;
+    }
     #open_nav_btn {
       @apply text-2xl text-slate-200 absolute left-3 top-3;
       @apply md:hidden;

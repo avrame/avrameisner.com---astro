@@ -47,7 +47,7 @@
       @apply mr-2;
     }
     .content-container {
-      @apply flex flex-auto flex-col items-center self-stretch;
+      @apply flex flex-auto flex-col items-center justify-around self-stretch;
       figure {
         width: 80%;
       }
@@ -64,7 +64,7 @@
         background: white;
       }
       .source-code-url {
-        @apply underline text-blue-700 hover:text-blue-900;
+        @apply text-blue-700 underline hover:text-blue-900;
         @apply dark:text-cyan-200 dark:hover:text-cyan-400;
         @apply mt-2;
         @apply transition-colors;
