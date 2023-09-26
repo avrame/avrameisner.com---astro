@@ -23,9 +23,15 @@
   const MAX_VERTEX_VEL = .15
   const MAX_LINE_LENGTH = 110
   const OUTER_PADDING = 20
+  const POINTER_INFLUENCE_DIST = 25
 
   const canvas_container = document.querySelector('#canvas_container') as HTMLDivElement
   const app = new PIXI.Application({ background: BG_COLOR, antialias: true, resizeTo: canvas_container })
+  // Enable interactivity!
+  app.stage.eventMode = 'static';
+  // Make sure the whole canvas area is interactive, not just the circle.
+  app.stage.hitArea = app.screen;
+
   canvas_container.appendChild(app.view as HTMLCanvasElement);
 
   const NUM_VERTEXES = Math.round(app.screen.width * app.screen.height / VERTEX_SPARSITY)
@@ -35,6 +41,8 @@
   const MAX_HEIGHT_VIRT_SCREEN = app.screen.height + OUTER_PADDING
 
   const graphics = new PIXI.Graphics();
+
+  let ptrPos = { x:0, y:0 }
 
   class Vertex {
     pos: PIXI.Point
@@ -67,6 +75,7 @@
     }
   }
 
+  // Initialize vertexes
   const vertexes: Vertex[] = []
   for (let i = 0; i < NUM_VERTEXES; i++) {
     const randX = get_random_range(-OUTER_PADDING, MAX_WIDTH_VIRT_SCREEN)
@@ -74,16 +83,25 @@
     const randXrange = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
     const randYrange = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
     const randVel = new PIXI.Point(randXrange, randYrange)
-
     vertexes.push(new Vertex(randX, randY, randVel))
   }
+
+  app.stage.addEventListener('pointermove', (e) => { ptrPos = e.global })
 
   app.ticker.add((delta) => {
     graphics.clear()
     
     for (let i = 0; i < NUM_VERTEXES; i++) {
+      const v1 = vertexes[i].pos
+      const x_ptr_dist = Math.abs(v1.x - ptrPos.x)
+      const y_ptr_dist = Math.abs(v1.y - ptrPos.y)
+      const ptr_dist = Math.sqrt(x_ptr_dist ** 2 + y_ptr_dist ** 2)
+      if (ptr_dist < POINTER_INFLUENCE_DIST) {
+        const vel_away_from_ptr = 1 - lerp(ptr_dist, 0, POINTER_INFLUENCE_DIST, 0, 1)
+        console.log(vel_away_from_ptr)
+      }
+
       for (let j = i + 1; j < NUM_VERTEXES; j++) {
-        const v1 = vertexes[i].pos
         const v2 = vertexes[j].pos
         const x_dist = Math.abs(v1.x - v2.x)
         const y_dist = Math.abs(v1.y - v2.y)
