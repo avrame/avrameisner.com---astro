@@ -47,14 +47,14 @@
       @apply mr-2;
     }
     .content-container {
-      @apply flex flex-auto flex-col items-center justify-around self-stretch;
+      @apply flex flex-auto flex-col items-center justify-center self-stretch;
       figure {
-        width: 80%;
+        width: 100%;
       }
       img {
         @apply rounded-lg;
         max-height: calc(100vh - 6rem);
-        width: 100%;
+        margin: 0 auto;
       }
       iframe {
         @apply rounded-lg;
