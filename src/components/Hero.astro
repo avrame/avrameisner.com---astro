@@ -20,12 +20,19 @@
   const VERTEX_COLOR = 0xDD0064
   const VERTEX_RADIUS = 2
   const VERTEX_SPARSITY = 1500
-  const MAX_VERTEX_VEL = .15
-  const MAX_LINE_LENGTH = 110
+  const MAX_VERTEX_VEL = .25
+  const MAX_VERTEX_REPULSE_VEL = 3 * MAX_VERTEX_VEL
+  const MAX_LINE_LENGTH = 120
   const OUTER_PADDING = 20
+  const POINTER_INFLUENCE_DIST = 50
 
   const canvas_container = document.querySelector('#canvas_container') as HTMLDivElement
   const app = new PIXI.Application({ background: BG_COLOR, antialias: true, resizeTo: canvas_container })
+  // Enable interactivity!
+  app.stage.eventMode = 'static';
+  // Make sure the whole canvas area is interactive, not just the circle.
+  app.stage.hitArea = app.screen;
+
   canvas_container.appendChild(app.view as HTMLCanvasElement);
 
   const NUM_VERTEXES = Math.round(app.screen.width * app.screen.height / VERTEX_SPARSITY)
@@ -36,6 +43,8 @@
 
   const graphics = new PIXI.Graphics();
 
+  let ptr_pos = new PIXI.Point(Infinity, Infinity)
+
   class Vertex {
     pos: PIXI.Point
     vel: PIXI.Point
@@ -43,6 +52,18 @@
     constructor(x: number, y: number, vel: PIXI.Point) {
       this.pos = new PIXI.Point(x, y)
       this.vel = vel
+    }
+
+    accelerate(x_dist: number, y_dist: number, delta: number) {
+      const mouse_acc = new PIXI.Point(2 / x_dist, 2 / y_dist)
+      this.vel = this.vel.add(mouse_acc.multiplyScalar(delta))
+      if (this.vel.magnitude() > MAX_VERTEX_REPULSE_VEL) {
+        this.vel = this.vel.normalize().multiplyScalar(MAX_VERTEX_REPULSE_VEL)
+      }
+    }
+
+    decelerate(delta: number) {
+      this.vel = this.vel.multiplyScalar(.995)
     }
 
     move(delta: number) {
@@ -67,33 +88,52 @@
     }
   }
 
+  // Initialize vertexes
   const vertexes: Vertex[] = []
   for (let i = 0; i < NUM_VERTEXES; i++) {
     const randX = get_random_range(-OUTER_PADDING, MAX_WIDTH_VIRT_SCREEN)
     const randY = get_random_range(-OUTER_PADDING, MAX_HEIGHT_VIRT_SCREEN)
-    const randXrange = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
-    const randYrange = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
+    const randXrange = get_random_range(-1, 1)
+    const randYrange = get_random_range(-1, 1)
     const randVel = new PIXI.Point(randXrange, randYrange)
-
+      .normalize()
+      .multiplyScalar(get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL))
     vertexes.push(new Vertex(randX, randY, randVel))
   }
+
+  app.stage.addEventListener('pointermove', (e) => { ptr_pos.set(e.globalX, e.globalY) })
 
   app.ticker.add((delta) => {
     graphics.clear()
     
     for (let i = 0; i < NUM_VERTEXES; i++) {
+      const v1 = vertexes[i].pos
+      const x_dist = v1.x - ptr_pos.x
+      const y_dist = v1.y - ptr_pos.y
+      const ptr_dist = Math.sqrt(Math.abs(x_dist) ** 2 + Math.abs(y_dist) ** 2)
+      if (ptr_dist < POINTER_INFLUENCE_DIST) {
+        vertexes[i].accelerate(x_dist, y_dist, delta)
+        graphics.lineStyle(LINE_WIDTH, '#FFF', .33)
+        graphics.moveTo(v1.x, v1.y)
+        graphics.lineTo(ptr_pos.x, ptr_pos.y)
+        graphics.closePath()
+      } else if (vertexes[i].vel.magnitude() > MAX_VERTEX_VEL) {
+        vertexes[i].decelerate(delta)
+      }
+        
+
       for (let j = i + 1; j < NUM_VERTEXES; j++) {
-        const v1 = vertexes[i].pos
         const v2 = vertexes[j].pos
         const x_dist = Math.abs(v1.x - v2.x)
         const y_dist = Math.abs(v1.y - v2.y)
         const dist = Math.sqrt(x_dist ** 2 + y_dist ** 2)
         if (dist < MAX_LINE_LENGTH) {
-          const alpha = 1 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1)
-          graphics.lineStyle(LINE_WIDTH, LINE_COLOR, alpha);
-          graphics.moveTo(v1.x, v1.y)
-          graphics.lineTo(v2.x, v2.y)
-          graphics.closePath()
+          const alpha = .85 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1)
+          graphics
+            .lineStyle(LINE_WIDTH, LINE_COLOR, alpha)
+            .moveTo(v1.x, v1.y)
+            .lineTo(v2.x, v2.y)
+            .closePath()
         }
       }
     }
@@ -101,7 +141,9 @@
 
     graphics.beginFill(VERTEX_COLOR);
     for (const v of vertexes) {
-      graphics.drawCircle(v.pos.x, v.pos.y, VERTEX_RADIUS)
+      graphics
+        .lineStyle(0)
+        .drawCircle(v.pos.x, v.pos.y, VERTEX_RADIUS)
       // move vertex
       v.move(delta)
     }
