@@ -29,10 +29,10 @@ prev_img_btn?.addEventListener("click", show_prev_image);
 next_img_btn?.addEventListener("click", show_next_image);
 
 // *** START FUNCTIONS ***
-function show_lightbox(event: Event) {
-  event.preventDefault();
+function show_lightbox(e: Event) {
+  e.preventDefault();
 
-  const target = event.target as Element;
+  const target = e.target as Element;
   const link = target.closest("a") as HTMLAnchorElement;
 
   if (link?.tagName === "A") {
@@ -68,7 +68,7 @@ function show_lightbox(event: Event) {
       }
     }
     // Attach keyboard events
-    document.addEventListener("keydown", handle_keyboard);
+    document.addEventListener("keydown", handle_keyboard, { passive: true });
     lightbox?.classList.add("fade-in");
     lightbox?.showModal();
   }
@@ -97,20 +97,23 @@ function fade_out_lightbox() {
   lightbox.removeEventListener("transitionend", fade_out_lightbox);
 }
 
-function hide_lightbox() {
+function hide_lightbox(event?: Event) {
+  event?.preventDefault()
   lightbox.classList.remove("fade-in");
   lightbox.classList.add("fade-out");
   document.removeEventListener("keydown", handle_keyboard);
   lightbox.addEventListener("transitionend", fade_out_lightbox);
 }
 
-function show_next_image() {
+function show_next_image(e?: Event) {
+  e?.preventDefault()
   const new_idx = img_idx + 1;
   img_idx = new_idx === images.length ? 0 : new_idx;
   set_figure(images[img_idx]);
 }
 
-function show_prev_image() {
+function show_prev_image(e?: Event) {
+  e?.preventDefault()
   const new_idx = img_idx - 1;
   img_idx = new_idx < 0 ? images.length - 1 : new_idx;
   set_figure(images[img_idx]);
