@@ -10,7 +10,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/partytown": "^2.0.1",
     "@astrojs/tailwind": "^5.0.0",
     "@pixi/math-extras": "^7.2.4",
     "astro": "^3.0.5",
