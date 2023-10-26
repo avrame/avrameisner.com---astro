@@ -1,21 +1,17 @@
 ---
 import Nav from "./Nav.astro";
-import { Icon } from 'astro-icon'
+import { Icon } from "astro-icon";
 ---
 
 <header>
   <button id="open_nav_btn" aria-label="Open Main Nav">
-    <Icon pack="iconoir" name="menu">
+    <Icon pack="iconoir" name="menu" />
   </button>
   <a href="/" class="logo"><span>AE</span></a>
   <Nav />
-  <dark-mode-toggle
-    id="dark-mode-toggle"
-    appearance="toggle"
-    permanent="true"
+  <dark-mode-toggle id="dark-mode-toggle" appearance="toggle" permanent="true"
   ></dark-mode-toggle>
 </header>
-
 <style>
   @tailwind base;
   @tailwind components;
@@ -28,9 +24,9 @@ import { Icon } from 'astro-icon'
 
   @layer base {
     header {
-      @apply bg-blue-300 dark:bg-blue-700 shadow-md p-4;
-      @apply z-50 flex justify-between md:flex-col items-center sticky inset-y-0 px-4;
-      @apply dark:md:bg-blue-600 md:justify-between md:flex-row;
+      @apply bg-blue-300 p-4 shadow-md dark:bg-blue-700;
+      @apply sticky inset-y-0 z-50 flex items-center justify-between px-4 md:flex-col;
+      @apply md:flex-row md:justify-between dark:md:bg-blue-600;
     }
   }
 
@@ -45,13 +41,13 @@ import { Icon } from 'astro-icon'
         @apply dark:text-slate-400;
       }
       [astro-icon] {
-        @apply w-6 h-6;
+        @apply h-6 w-6;
       }
     }
     .logo {
-      @apply bg-purple-800 text-white shadow-inner shadow-slate-800 border-black;
-      @apply w-12 h-12 flex justify-center items-center rounded-full;
-      @apply mr-auto ml-4;
+      @apply border-black bg-purple-800 text-white shadow-inner shadow-slate-800;
+      @apply flex h-12 w-12 items-center justify-center rounded-full;
+      @apply ml-4 mr-auto;
     }
   }
 </style>
