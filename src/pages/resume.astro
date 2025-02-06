@@ -93,6 +93,24 @@ import Link from "../components/Link.astro";
       <Heading level={2}>Related Experience</Heading>
       <ol class="vcalendar flex flex-col gap-6">
         <ResumeExperience
+          org="Hazel Health"
+          title="Senior Frontend Web Developer"
+          start_date={new Date(2023, 10)}
+          end_date="Current"
+          tech_used={["React", "TypeScript"]}
+        >
+          <UnorderedList>
+            <li class="mt-2">
+              Created a system for filling out and managing online clinical forms, empowering therapists to more quickly
+              and efficiently evaluate patients’ mental health.
+            </li>
+            <li class="mt-2">
+              Worked closely with designers to build a calendar of upcoming and past mental health visits to help school
+              coordinators easily plan out each week.
+            </li>
+          </UnorderedList>
+        </ResumeExperience>
+        <ResumeExperience
           org="Persefoni AI, Inc."
           title="Senior Frontend Web Developer"
           start_date={new Date(2022, 4)}

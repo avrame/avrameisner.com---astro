@@ -1,10 +1,10 @@
 ---
-import Heading from './Heading.astro';
+import Heading from "./Heading.astro";
 interface Props {
   org: string;
   title: string;
   start_date: Date;
-  end_date: Date;
+  end_date: Date | "Current";
   tech_used: Array<string>;
 }
 
@@ -38,13 +38,16 @@ const getHumanDate = (date: Date) =>
   <Heading level={3}>{org}</Heading>
   <Heading level={4}><em>{title}</em></Heading>
   <Heading level={5}>
-    <time class="dstart" datetime={getDateTime(start_date)}
-      >{getHumanDate(start_date)}</time
-    >
+    <time class="dstart" datetime={getDateTime(start_date)}>{getHumanDate(start_date)}</time>
     <span>&nbsp;&ndash;&nbsp;</span>
-    <time class="dend" datetime={getDateTime(end_date)}
-      >{getHumanDate(end_date)}</time
+    <time
+      class="dend"
+      datetime={typeof end_date === "string"
+        ? getDateTime(new Date())
+        : getDateTime(end_date)}
     >
+      {typeof end_date === "string" ? end_date : getHumanDate(end_date)}
+    </time>
   </Heading>
   <p>
     <span class="underline mr-2">Technologies used:</span>
