@@ -11,12 +11,11 @@
     --blur: 1rem;
     --fs: clamp(3rem, 8vw, 7rem);
     --ls: clamp(-1.75px, -0.25vw, -3.5px);
+
+    --grid-size: 960px;
   }
 
   body {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
     background-color: var(--bg);
     color: #fff;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
@@ -27,10 +26,6 @@
   *::after {
     font-family: inherit;
     box-sizing: border-box;
-  }
-
-  .content {
-    text-align: center;
   }
 
   .title {
@@ -212,19 +207,236 @@
       border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
     }
   }
+
+  #game_container {
+    margin: 0 auto;
+    width: var(--grid-size);
+    height: var(--grid-size);
+  }
+  #birthday_message {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
+    transition: filter 1s;
+
+    &.blurred {
+      filter: blur(32px);
+    }
+  }
+  #game_grid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    transform: translateY(calc((100vh - var(--grid-size)) / 2));
+    position: relative;
+    z-index: 10;
+
+    > .cell {
+      perspective: 600px;
+      overflow: visible;
+      > .card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transform-origin: center right;
+        transition: transform 1s;
+        &.flipped {
+          transform: translateX(-100%) rotateY(-180deg);
+        }
+        &.matched {
+          .back {
+            opacity: 0;
+          }
+        }
+      }
+    }
+    .card-face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      line-height: 260px;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      font-size: 40px;
+      backface-visibility: hidden;
+
+      &.front {
+        background-image: url('/img/monas-birthday/card-pattern.jpg');
+        background-size: cover;
+      }
+      &.back {
+        background: slateblue;
+        transform: rotateY(180deg);
+        background-size: cover;
+        opacity: 1;
+        transition: opacity 1s;
+      }
+    }
+
+    .card_0 .back {
+      background-image: url('/img/monas-birthday/photos/0.jpeg');
+    }
+    .card_1 .back {
+      background-image: url('/img/monas-birthday/photos/1.jpeg');
+    }
+    .card_2 .back {
+      background-image: url('/img/monas-birthday/photos/2.jpeg');
+    }
+    .card_3 .back {
+      background-image: url('/img/monas-birthday/photos/3.jpeg');
+    }
+    .card_4 .back {
+      background-image: url('/img/monas-birthday/photos/4.jpeg');
+    }
+    .card_5 .back {
+      background-image: url('/img/monas-birthday/photos/5.jpeg');
+      background-position-y: 35%;
+    }
+    .card_6 .back {
+      background-image: url('/img/monas-birthday/photos/6.jpeg');
+    }
+    .card_7 .back {
+      background-image: url('/img/monas-birthday/photos/7.jpeg');
+    }
+    .card_8 .back {
+      background-image: url('/img/monas-birthday/photos/8.jpeg');
+    }
+  }
 </style>
 
-<div class="content">
-  <h1 class="title">
-    Happy Birthday Mona!!!
-    <div class="aurora">
-      <div class="aurora__item"></div>
-      <div class="aurora__item"></div>
-      <div class="aurora__item"></div>
-      <div class="aurora__item"></div>
-    </div>
-  </h1>
-  <p class="subtitle">
-    <img src="/img/red-heart.png" width="32" style="display:inline;" />, Avram
-  </p>
+<script>
+  import confetti from 'canvas-confetti'
+
+  const birthdayMessage = document.getElementById('birthday_message')
+  const gameGrid = document.getElementById("game_grid")
+  const happyBirthdayAudio = document.createElement('audio');
+  happyBirthdayAudio.src = '/audio/happy-birthday.wav'
+
+  interface Card {
+    id: number,
+    matched: boolean,
+    html?: HTMLButtonElement,
+  }
+
+  const cards: Card[] = []
+  for (let i = 0; i < 8; i++) {
+    cards.push({ id: i, matched: false })
+    cards.push({ id: i, matched: false })
+  }
+  
+  // shuffle(cards)
+
+  let flippedCards: Card[] = []
+  let canFlipCards = true
+
+  cards.forEach(card => {
+    const cellHtml = document.createElement("div")
+    cellHtml.classList.add('cell')
+
+    const cardHtml = document.createElement("button")
+    cardHtml.classList.add('card')
+    cardHtml.classList.add(`card_${card.id}`)
+    card.html = cardHtml
+    
+    cardHtml.addEventListener('click', cardClickHandler)
+
+    function cardClickHandler() {
+      if (!canFlipCards) return
+      if (flippedCards.length < 2) {
+        cardHtml.classList.add('flipped')
+        flippedCards.push(card)
+        if (flippedCards.length == 2) {
+          const [card1, card2] = flippedCards
+          canFlipCards = false
+          card1.html?.addEventListener('transitionend', () => {
+            canFlipCards = true
+          })
+          setTimeout(() => {
+            if (card1.id == card2.id) {
+              card1.html?.classList.add('matched')
+              card2.html?.classList.add('matched')
+              card1.html?.removeEventListener('click', cardClickHandler)
+              card2.html?.removeEventListener('click', cardClickHandler)
+              card1.matched = true
+              card2.matched = true
+              card1.html?.addEventListener('transitionend', () => {
+                // Check if all cards have been matched
+                if (cards.every(card => card.matched)) {
+                  // Remove the blur for the birthday message!
+                  birthdayMessage?.classList.remove('blurred')
+                  happyBirthdayAudio.play()
+                  confetti({
+                    particleCount: 300,
+                    spread: 120,
+                  })
+                }
+              })
+            } else {
+              card1.html?.classList.remove('flipped')
+              card2.html?.classList.remove('flipped')
+            }
+            flippedCards = []
+          }, 2000) 
+        }
+      }
+    }
+
+    const cardFrontHtml = document.createElement("div")
+    cardFrontHtml.classList.add('card-face')
+    cardFrontHtml.classList.add('front')
+    cardHtml.appendChild(cardFrontHtml)
+
+    const cardBackHtml = document.createElement("div")
+    cardBackHtml.classList.add('card-face')
+    cardBackHtml.classList.add('back')
+    // cardBackHtml.innerText = card.id.toString()
+    cardHtml.appendChild(cardBackHtml)
+    
+    cellHtml.appendChild(cardHtml)
+
+    gameGrid?.appendChild(cellHtml)
+  })
+
+  function shuffle(array: any[]) {
+    let currentIndex = array.length;
+
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [
+        array[currentIndex], array[randomIndex]
+      ] = [
+        array[randomIndex], array[currentIndex]
+      ]
+    }
+  }
+</script>
+
+
+<div id="game_container">
+  <div id="game_grid">
+  <div id="birthday_message" class="blurred">
+    <h1 class="title">
+      Happy Birthday Mona!!!
+      <div class="aurora">
+        <div class="aurora__item"></div>
+        <div class="aurora__item"></div>
+        <div class="aurora__item"></div>
+        <div class="aurora__item"></div>
+      </div>
+    </h1>
+    <p class="subtitle">
+      <img src="/img/monas-birthday/red-heart.png" width="32" style="display:inline;" />, Avram
+    </p>
+  </div>
 </div>
