@@ -8,7 +8,7 @@
     --clr-4: #e54cff;
 
     --blur: 1rem;
-    --fs: clamp(3rem, 10vw, 11rem);
+    --fs: clamp(3rem, 10vw, 10rem);
     --ls: clamp(-1.75px, -0.25vw, -3.5px);
 
     --grid-size: 95vh;
@@ -220,6 +220,7 @@
     text-align: center;
     position: absolute;
     top: 50%;
+    left: 0;
     transform: translateY(-50%);
     z-index: 0;
     transition: filter 2s;
