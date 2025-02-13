@@ -11,7 +11,14 @@
     --fs: clamp(3rem, 10vw, 10rem);
     --ls: clamp(-1.75px, -0.25vw, -3.5px);
 
+
     --grid-size: 95vh;
+  }
+
+  @media (orientation: portrait) {
+    :root {
+      --grid-size: 95vw;
+    }
   }
 
   body {
