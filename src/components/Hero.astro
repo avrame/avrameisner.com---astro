@@ -13,27 +13,29 @@
 <script>
   import * as PIXI from 'pixi.js'
 
-  const BG_COLOR = '#000'
-  const LINE_COLOR = 0x22d3ee //0x6b21a8
-  const LINE_WIDTH = 1.25
-  const VERTEX_COLOR = 0xDD0064
-  const VERTEX_RADIUS = 2
-  const VERTEX_SPARSITY = 1500
-  const MAX_VERTEX_VEL = .25
-  const MAX_VERTEX_REPULSE_VEL = 3 * MAX_VERTEX_VEL
-  const MAX_LINE_LENGTH = 120
-  const OUTER_PADDING = 20
-  const POINTER_INFLUENCE_DIST = 50
+  async function initPixi() {
+    try {
+      const BG_COLOR = '#000'
+      const LINE_COLOR = 0x22d3ee //0x6b21a8
+      const LINE_WIDTH = 1.25
+      const VERTEX_COLOR = 0xDD0064
+      const VERTEX_RADIUS = 2
+      const VERTEX_SPARSITY = 1300
+      const MAX_VERTEX_VEL = .25
+      const MAX_VERTEX_REPULSE_VEL = 3 * MAX_VERTEX_VEL
+      const MAX_LINE_LENGTH = 120
+      const OUTER_PADDING = 20
+      const POINTER_INFLUENCE_DIST = 50
 
-  const canvas_container = document.querySelector('#canvas_container') as HTMLDivElement
-  const app = new PIXI.Application()
-  
-  // Initialize the application asynchronously
-  await app.init({ 
-    background: BG_COLOR, 
-    antialias: true, 
-    resizeTo: canvas_container 
-  })
+      const canvas_container = document.querySelector('#canvas_container') as HTMLDivElement
+      const app = new PIXI.Application()
+      
+      // Initialize the application asynchronously
+      await app.init({ 
+        background: BG_COLOR, 
+        antialias: true, 
+        resizeTo: canvas_container 
+      })
   
   // Enable interactivity!
   app.stage.eventMode = 'static';
@@ -49,6 +51,7 @@
   const MAX_HEIGHT_VIRT_SCREEN = app.screen.height + OUTER_PADDING
 
   const graphics = new PIXI.Graphics();
+  app.stage.addChild(graphics);
 
   let ptr_pos = new PIXI.Point(Infinity, Infinity)
 
@@ -135,15 +138,15 @@
       const v1 = vertexes[i].pos
       const x_dist = v1.x - ptr_pos.x
       const y_dist = v1.y - ptr_pos.y
-      const ptr_dist = Math.sqrt(Math.abs(x_dist) ** 2 + Math.abs(y_dist) ** 2)
-      if (ptr_dist < POINTER_INFLUENCE_DIST) {
+      const ptr_dist_squared = x_dist * x_dist + y_dist * y_dist
+      if (ptr_dist_squared < POINTER_INFLUENCE_DIST * POINTER_INFLUENCE_DIST) {
         vertexes[i].accelerate(x_dist, y_dist, delta)
         graphics.moveTo(v1.x, v1.y)
         graphics.lineTo(ptr_pos.x, ptr_pos.y)
         graphics.stroke({ width: LINE_WIDTH, color: '#FFF', alpha: .33 })
       } else {
-        const velMagnitude = Math.sqrt(vertexes[i].vel.x * vertexes[i].vel.x + vertexes[i].vel.y * vertexes[i].vel.y)
-        if (velMagnitude > MAX_VERTEX_VEL) {
+        const velMagnitudeSquared = vertexes[i].vel.x * vertexes[i].vel.x + vertexes[i].vel.y * vertexes[i].vel.y
+        if (velMagnitudeSquared > MAX_VERTEX_VEL * MAX_VERTEX_VEL) {
           vertexes[i].decelerate(delta)
         }
       }
@@ -153,11 +156,17 @@
         const v2 = vertexes[j].pos
         const x_dist = Math.abs(v1.x - v2.x)
         const y_dist = Math.abs(v1.y - v2.y)
+        
+        // Early exit if vertices are too far apart (optimization)
+        if (x_dist > MAX_LINE_LENGTH || y_dist > MAX_LINE_LENGTH) continue
+        
         const dist = Math.sqrt(x_dist ** 2 + y_dist ** 2)
-        const alpha = Math.max(0, .85 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1))
-        graphics.moveTo(v1.x, v1.y)
-        graphics.lineTo(v2.x, v2.y)
-        graphics.stroke({ width: LINE_WIDTH, color: LINE_COLOR, alpha: alpha })
+        if (dist < MAX_LINE_LENGTH) {
+          const alpha = Math.max(0, .85 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1))
+          graphics.moveTo(v1.x, v1.y)
+          graphics.lineTo(v2.x, v2.y)
+          graphics.stroke({ width: LINE_WIDTH, color: LINE_COLOR, alpha: alpha })
+        }
       }
     }
 
@@ -169,8 +178,6 @@
       // move vertex
       v.move(delta)
     }
-
-    app.stage.addChild(graphics);
   });
 
   function get_random_range(min: number, max: number) {
@@ -180,5 +187,17 @@
   function lerp(x: number, from_min: number, from_max: number, to_min: number, to_max: number) {
     const ratio = x / (from_max - from_min)
     return ratio * (to_max - to_min)
+  }
+  
+    } catch (error) {
+      console.error('Error initializing PixiJS:', error);
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPixi);
+  } else {
+    initPixi();
   }
 </script>
