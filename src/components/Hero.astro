@@ -11,8 +11,7 @@
 </style>
 
 <script>
-  import * as PIXI from 'pixi.js';
-  import '@pixi/math-extras'
+  import * as PIXI from 'pixi.js'
 
   const BG_COLOR = '#000'
   const LINE_COLOR = 0x22d3ee //0x6b21a8
@@ -27,13 +26,21 @@
   const POINTER_INFLUENCE_DIST = 50
 
   const canvas_container = document.querySelector('#canvas_container') as HTMLDivElement
-  const app = new PIXI.Application({ background: BG_COLOR, antialias: true, resizeTo: canvas_container })
+  const app = new PIXI.Application()
+  
+  // Initialize the application asynchronously
+  await app.init({ 
+    background: BG_COLOR, 
+    antialias: true, 
+    resizeTo: canvas_container 
+  })
+  
   // Enable interactivity!
   app.stage.eventMode = 'static';
   // Make sure the whole canvas area is interactive, not just the circle.
   app.stage.hitArea = app.screen;
 
-  canvas_container.appendChild(app.view as HTMLCanvasElement);
+  canvas_container.appendChild(app.canvas as HTMLCanvasElement);
 
   const NUM_VERTEXES = Math.round(app.screen.width * app.screen.height / VERTEX_SPARSITY)
   const MIN_WIDTH_VIRT_SCREEN = 0 - OUTER_PADDING
@@ -56,14 +63,22 @@
 
     accelerate(x_dist: number, y_dist: number, delta: number) {
       const mouse_acc = new PIXI.Point(2 / x_dist, 2 / y_dist)
-      this.vel = this.vel.add(mouse_acc.multiplyScalar(delta))
-      if (this.vel.magnitude() > MAX_VERTEX_REPULSE_VEL) {
-        this.vel = this.vel.normalize().multiplyScalar(MAX_VERTEX_REPULSE_VEL)
+      // Add mouse acceleration to velocity
+      this.vel.x += mouse_acc.x * delta
+      this.vel.y += mouse_acc.y * delta
+      
+      // Check magnitude and limit if necessary
+      const magnitude = Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y)
+      if (magnitude > MAX_VERTEX_REPULSE_VEL) {
+        // Normalize and multiply by max velocity
+        this.vel.x = (this.vel.x / magnitude) * MAX_VERTEX_REPULSE_VEL
+        this.vel.y = (this.vel.y / magnitude) * MAX_VERTEX_REPULSE_VEL
       }
     }
 
     decelerate(delta: number) {
-      this.vel = this.vel.multiplyScalar(.995)
+      this.vel.x *= .995
+      this.vel.y *= .995
     }
 
     move(delta: number) {
@@ -83,8 +98,9 @@
         this.vel.y = -this.vel.y
       }
 
-      const adjusted_velocity = this.vel.multiplyScalar(delta)
-      this.pos = this.pos.add(adjusted_velocity)
+      // Apply velocity to position
+      this.pos.x += this.vel.x * delta
+      this.pos.y += this.vel.y * delta
     }
   }
 
@@ -96,14 +112,23 @@
     const randXrange = get_random_range(-1, 1)
     const randYrange = get_random_range(-1, 1)
     const randVel = new PIXI.Point(randXrange, randYrange)
-      .normalize()
-      .multiplyScalar(get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL))
+    // Normalize the vector
+    const magnitude = Math.sqrt(randVel.x * randVel.x + randVel.y * randVel.y)
+    if (magnitude > 0) {
+      randVel.x /= magnitude
+      randVel.y /= magnitude
+    }
+    // Multiply by random scalar
+    const scalar = get_random_range(-MAX_VERTEX_VEL, MAX_VERTEX_VEL)
+    randVel.x *= scalar
+    randVel.y *= scalar
     vertexes.push(new Vertex(randX, randY, randVel))
   }
 
-  app.stage.addEventListener('pointermove', (e) => { ptr_pos.set(e.globalX, e.globalY) })
+  app.stage.on('pointermove', (e) => { ptr_pos.set(e.globalX, e.globalY) })
 
-  app.ticker.add((delta) => {
+  app.ticker.add((ticker) => {
+    const delta = ticker.deltaTime
     graphics.clear()
     
     for (let i = 0; i < NUM_VERTEXES; i++) {
@@ -113,12 +138,14 @@
       const ptr_dist = Math.sqrt(Math.abs(x_dist) ** 2 + Math.abs(y_dist) ** 2)
       if (ptr_dist < POINTER_INFLUENCE_DIST) {
         vertexes[i].accelerate(x_dist, y_dist, delta)
-        graphics.lineStyle(LINE_WIDTH, '#FFF', .33)
         graphics.moveTo(v1.x, v1.y)
         graphics.lineTo(ptr_pos.x, ptr_pos.y)
-        graphics.closePath()
-      } else if (vertexes[i].vel.magnitude() > MAX_VERTEX_VEL) {
-        vertexes[i].decelerate(delta)
+        graphics.stroke({ width: LINE_WIDTH, color: '#FFF', alpha: .33 })
+      } else {
+        const velMagnitude = Math.sqrt(vertexes[i].vel.x * vertexes[i].vel.x + vertexes[i].vel.y * vertexes[i].vel.y)
+        if (velMagnitude > MAX_VERTEX_VEL) {
+          vertexes[i].decelerate(delta)
+        }
       }
         
 
@@ -127,27 +154,21 @@
         const x_dist = Math.abs(v1.x - v2.x)
         const y_dist = Math.abs(v1.y - v2.y)
         const dist = Math.sqrt(x_dist ** 2 + y_dist ** 2)
-        if (dist < MAX_LINE_LENGTH) {
-          const alpha = .85 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1)
-          graphics
-            .lineStyle(LINE_WIDTH, LINE_COLOR, alpha)
-            .moveTo(v1.x, v1.y)
-            .lineTo(v2.x, v2.y)
-            .closePath()
-        }
+        const alpha = Math.max(0, .85 - lerp(dist, 0, MAX_LINE_LENGTH, 0, 1))
+        graphics.moveTo(v1.x, v1.y)
+        graphics.lineTo(v2.x, v2.y)
+        graphics.stroke({ width: LINE_WIDTH, color: LINE_COLOR, alpha: alpha })
       }
     }
 
 
-    graphics.beginFill(VERTEX_COLOR);
     for (const v of vertexes) {
-      graphics
-        .lineStyle(0)
-        .drawCircle(v.pos.x, v.pos.y, VERTEX_RADIUS)
+      graphics.setFillStyle({ color: VERTEX_COLOR })
+      graphics.circle(v.pos.x, v.pos.y, VERTEX_RADIUS)
+      graphics.fill()
       // move vertex
       v.move(delta)
     }
-    graphics.endFill()
 
     app.stage.addChild(graphics);
   });
